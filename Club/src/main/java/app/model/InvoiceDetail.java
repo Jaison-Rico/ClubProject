@@ -1,4 +1,3 @@
-
 package app.model;
 
 public class InvoiceDetail {

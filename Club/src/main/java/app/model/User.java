@@ -1,6 +1,4 @@
-
 package app.model;
-
 
 public class User {
     private long id;
@@ -9,8 +7,7 @@ public class User {
     private String role;
     private Person personId;
 
-    public User() {
-    }
+    public User() {}
 
     public long getId() {
         return id;

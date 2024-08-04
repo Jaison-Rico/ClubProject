@@ -1,6 +1,4 @@
-
 package app.model;
-
 
 public class Person {
     private long id;
