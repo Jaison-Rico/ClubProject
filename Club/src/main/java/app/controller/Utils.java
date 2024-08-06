@@ -4,16 +4,15 @@
  */
 package app.controller;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Scanner;
 
 
 public abstract class Utils {
    private static Scanner reader = new Scanner(System.in);
-   private static Date date = new Date();
    
    public static Date getDate(){
-       return date;
+       return new Date(System.currentTimeMillis());
    }
    public static Scanner getReader(){
        return reader;

@@ -106,8 +106,5 @@ public  class AdminController implements ControllerInterface{
         partnerDto.setCreationDate(Utils.getDate());
                 
 	System.out.println("se ha creado el usuario exitosamente");
-    }
-    
-    
-    
+    }  
 }
