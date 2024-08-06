@@ -48,6 +48,10 @@ public class UserDto {
     public void setPersonId(PersonDto personId) {
         this.personId = personId;
     }
+
+    public void setPersonid(PersonDto personDto) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     
 }
