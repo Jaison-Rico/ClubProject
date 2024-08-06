@@ -88,7 +88,7 @@ public  class AdminController implements ControllerInterface{
 		String password = Utils.getReader().nextLine();
 		userValidator.validPassword(password);
                 System.out.println("ingrese el fondo inical del socio");
-                double amount = Utils.getReader().nextDouble();
+                double amount = 50000;
 
 		PersonDto personDto = new PersonDto();
 		personDto.setName(name);
