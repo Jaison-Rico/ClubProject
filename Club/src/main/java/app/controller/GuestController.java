@@ -1,6 +1,4 @@
-
 package app.controller;
-
 
 public class GuestController implements ControllerInterface{
 

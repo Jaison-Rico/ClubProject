@@ -12,10 +12,9 @@ public class LoginController implements ControllerInterface{
     
     private static final String MENU = "ingrese la opcion que desea:"
         + "\n1.inicar sesion"
-        + "\2. detener la ejecucion";
+        + "\n2. detener la ejecucion";
     
-    private Map<String, ControllerInterface> roles;
-    
+    private Map<String, ControllerInterface> roles;    
     public LoginController(){
         this.userValidator = new UserValidator();
         //this.service = new Service();

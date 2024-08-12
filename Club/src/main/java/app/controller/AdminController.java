@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package app.controller;
 
 import app.controller.validator.PartnerValidator;
@@ -11,12 +7,10 @@ import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
 
-
 public  class AdminController implements ControllerInterface{
     private PersonValidator personValidator;
     private PartnerValidator partnerValidator;
     private UserValidator userValidator;
-    
     private static final String MENU = "ingrese la opcion que desea realizar "
         + "\n 1. para crear Socio "
         + "\n 2. Historial de facturas"
@@ -67,7 +61,7 @@ public  class AdminController implements ControllerInterface{
 		return false;
 		}
             default: {
-		System.out.println("ingrese un valor valido");
+		System.out.println("ingrese una opcion valido");
 		return true;
 		}
             }
