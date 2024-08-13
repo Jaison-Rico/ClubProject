@@ -3,12 +3,14 @@ package app.controller;
 
 import app.controller.validator.UserValidator;
 import app.dto.UserDto;
+import app.service.Service;
+import app.service.interfaces.LoginService;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginController implements ControllerInterface{
     private UserValidator userValidator;
-    //private LoginService service;
+    private LoginService service;
     
     private static final String MENU = "ingrese la opcion que desea:"
         + "\n1.inicar sesion"
@@ -17,7 +19,7 @@ public class LoginController implements ControllerInterface{
     private Map<String, ControllerInterface> roles;    
     public LoginController(){
         this.userValidator = new UserValidator();
-        //this.service = new Service();
+        this.service = new Service();
         
         ControllerInterface adminController = new AdminController();
         ControllerInterface guestController = new GuestController();
@@ -25,14 +27,7 @@ public class LoginController implements ControllerInterface{
         this.roles = new HashMap<String, ControllerInterface>();
         roles.put("admin",adminController);
         roles.put("guest",guestController);
-        roles.put("partner",partnerController);
-        
-        
-        
-        
-
-
-
+        roles.put("partner",partnerController);      
     }
     
     
@@ -83,7 +78,7 @@ public class LoginController implements ControllerInterface{
         userDto.setPassword(password);
         userDto.setUserName(userName);
         
-        //this.service.Login(userDto);
+        this.service.login(userDto);
         if(roles.get(userDto.getRole()) == null){
             throw new Exception("Rol invalido");
         }
