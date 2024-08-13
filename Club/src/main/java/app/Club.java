@@ -1,16 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
 
 package app;
 
-/**
- *
- * @author ESTUDIANTES
- */
+import app.controller.ControllerInterface;
+import app.controller.LoginController;
+
 public class Club {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        ControllerInterface controller = new LoginController();
+		try {
+			controller.session();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
     }
 }
