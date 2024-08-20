@@ -4,12 +4,14 @@ import app.controller.validator.PartnerValidator;
 import app.controller.validator.PersonValidator;
 import app.controller.validator.UserValidator;
 import app.dto.GuestDto;
+import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
 
 public class PartnerController implements ControllerInterface  {
     private PersonValidator personValidator;
     private UserValidator userValidator;
+    private PartnerValidator partnerValidator;
     
     private static final String MENU = "ingrese la opcion que desea realizar "
         + "\n 1. Crear invitado"
@@ -22,6 +24,7 @@ public class PartnerController implements ControllerInterface  {
         super();
         this.personValidator = new PersonValidator();
         this.userValidator = new UserValidator();
+        this.partnerValidator = new PartnerValidator();
     }
 
     public void session() throws Exception {
@@ -49,11 +52,11 @@ public class PartnerController implements ControllerInterface  {
 		return true;
             }
             case "2": {
-                System.out.println("comming soon");
+                this.incrementAmount();
 		return true;
             }
             case "3":{
-                System.out.println("comming soon");
+                this.vipPromotion();
                 return true;
             }
             case "4": {
@@ -102,4 +105,20 @@ public class PartnerController implements ControllerInterface  {
             guestDto.setStatus(true);
             System.out.println("se ha creado el usuario exitosamente");
     }
+    
+    private void incrementAmount() throws Exception{
+        System.out.println("Ingrese el monto que desea aumentar");
+            double amount = Utils.getReader().nextDouble();
+     
+            PartnerDto partnerDto = new PartnerDto();
+            partnerDto.setAmount(amount);
+    }
+    
+    private void vipPromotion() throws Exception{
+        System.out.println("Ascender socio regular a VIP");
+        
+            PartnerDto partnerDto = new PartnerDto();
+            partnerDto.setType(true);
+    }
+    
 }
