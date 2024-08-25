@@ -96,7 +96,7 @@ public class PartnerController implements ControllerInterface  {
             personDto.setDocument(document);
             personDto.setCellphone(cellPhone);
             UserDto userDto = new UserDto();
-            userDto.setPersonid(personDto);
+            userDto.setPersonId(personDto);
             userDto.setUserName(userName);
             userDto.setPassword(password);
             userDto.setRole("guest");

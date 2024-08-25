@@ -6,11 +6,14 @@ import app.controller.validator.UserValidator;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
+import app.service.Service;
+import app.service.interfaces.AdminService;
 
 public  class AdminController implements ControllerInterface{
     private PersonValidator personValidator;
-    private PartnerValidator partnerValidator;
     private UserValidator userValidator;
+    private PartnerValidator partnerValidator;
+    private AdminService service;
     private static final String MENU = "ingrese la opcion que desea realizar "
         + "\n 1. para crear Socio "
         + "\n 2. Historial de facturas"
@@ -19,9 +22,10 @@ public  class AdminController implements ControllerInterface{
 
     public AdminController() {
         super();
-        this.partnerValidator = new PartnerValidator();
+        this.service = new Service();
         this.personValidator = new PersonValidator();
         this.userValidator = new UserValidator();
+        this.partnerValidator = new PartnerValidator();
     }
     
     public void session() throws Exception {
@@ -81,24 +85,24 @@ public  class AdminController implements ControllerInterface{
 	System.out.println("ingrese la contraseña del socio");
 	String password = Utils.getReader().nextLine();
 	userValidator.validPassword(password);
-        System.out.println("ingrese el fondo inical del socio");
-        double amount = 50000;
-
+        System.out.println("ingrese el fondo inical del socio");  
+        double amount = partnerValidator.validAmount(Utils.getReader().nextLine());
+        
 	PersonDto personDto = new PersonDto();
 	personDto.setName(name);
 	personDto.setDocument(document);
 	personDto.setCellphone(cellPhone);
 	UserDto userDto = new UserDto();
-	userDto.setPersonid(personDto);
+	userDto.setPersonId(personDto);
 	userDto.setUserName(userName);
 	userDto.setPassword(password);
-	userDto.setRole("partner");
+	userDto.setRole("partner");          
         PartnerDto partnerDto = new PartnerDto();
         partnerDto.setUserId(userDto);
         partnerDto.setType(true);
         partnerDto.setAmount(amount);
         partnerDto.setCreationDate(Utils.getDate());
-                
+        this.service.createPartner(userDto);
 	System.out.println("se ha creado el usuario exitosamente");
     }  
 }

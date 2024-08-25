@@ -51,6 +51,8 @@ public class Service implements LoginService, AdminService, PartnerService {
         this.createUser(userDto);
     }
     
+    
+    
     private void createUser(UserDto userDto) throws Exception{
 		this.createPerson(userDto.getPersonId());
 		if(this.userDao.existsByUserName(userDto)) {
@@ -68,8 +70,10 @@ public class Service implements LoginService, AdminService, PartnerService {
 
     @Override
     public void createGuest(GuestDto guestDto) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not pepe yet.");
     }
+
+    
 
 
 }
