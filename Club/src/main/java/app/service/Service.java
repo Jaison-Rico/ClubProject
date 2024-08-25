@@ -4,6 +4,7 @@ import app.dao.PersonDaoImplementation;
 import app.dao.UserDaoImplementation;
 import app.dao.interfaces.PersonDao;
 import app.dao.interfaces.UserDao;
+import app.dto.GuestDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
 import app.service.interfaces.AdminService;
@@ -64,6 +65,11 @@ public class Service implements LoginService, AdminService, PartnerService {
 		}
 		this.personDao.createPerson(personDto);
 	}
+
+    @Override
+    public void createGuest(GuestDto guestDto) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
 
 }
