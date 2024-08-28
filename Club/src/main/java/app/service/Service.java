@@ -47,11 +47,9 @@ public class Service implements LoginService, AdminService, PartnerService {
     }
 
     @Override
-    public void createGuest(UserDto userDto) throws Exception {
-        this.createUser(userDto);
+    public void createGuest(GuestDto guestDto) throws Exception {
+        this.createGuest(guestDto);
     }
-    
-    
     
     private void createUser(UserDto userDto) throws Exception{
 		this.createPerson(userDto.getPersonId());
@@ -68,10 +66,14 @@ public class Service implements LoginService, AdminService, PartnerService {
 		this.personDao.createPerson(personDto);
 	}
 
+  
+
     @Override
-    public void createGuest(GuestDto guestDto) throws Exception {
-        throw new UnsupportedOperationException("Not pepe yet.");
+    public void promotiontovip(PersonDto personDto) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
+
+    
 
     
 

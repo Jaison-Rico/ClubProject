@@ -7,11 +7,14 @@ import app.dto.GuestDto;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
+import app.service.Service;
+import app.service.interfaces.PartnerService;
 
 public class PartnerController implements ControllerInterface  {
     private PersonValidator personValidator;
     private UserValidator userValidator;
     private PartnerValidator partnerValidator;
+    private PartnerService service;
     
     private static final String MENU = "ingrese la opcion que desea realizar "
         + "\n 1. Crear invitado"
@@ -25,6 +28,7 @@ public class PartnerController implements ControllerInterface  {
         this.personValidator = new PersonValidator();
         this.userValidator = new UserValidator();
         this.partnerValidator = new PartnerValidator();
+        this.service = new Service();
     }
 
     public void session() throws Exception {
@@ -103,6 +107,8 @@ public class PartnerController implements ControllerInterface  {
             GuestDto guestDto = new GuestDto();
             guestDto.setUserId(userDto);
             guestDto.setStatus(true);
+            // como saber que partner pasar
+            this.service.createGuest(guestDto);
             System.out.println("se ha creado el usuario exitosamente");
     }
     
@@ -115,8 +121,7 @@ public class PartnerController implements ControllerInterface  {
     }
     
     private void vipPromotion() throws Exception{
-        System.out.println("Ascender socio regular a VIP");
-        
+        System.out.println("Ascender socio regular a VIP");    
             PartnerDto partnerDto = new PartnerDto();
             partnerDto.setType(true);
     }
