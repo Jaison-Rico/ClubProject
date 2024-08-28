@@ -67,7 +67,7 @@ public class Service implements LoginService, AdminService, PartnerService {
 	}
 
   
-
+    // como vali8dar y hacer la promocion a vips
     @Override
     public void promotiontovip(PersonDto personDto) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); 
