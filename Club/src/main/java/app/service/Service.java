@@ -73,4 +73,9 @@ public class Service implements LoginService, AdminService, PartnerService {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
+    @Override
+    public void disableGuest(long document) throws Exception {
+        //
+    }
+
 }

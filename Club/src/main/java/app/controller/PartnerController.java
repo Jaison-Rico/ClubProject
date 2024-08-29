@@ -64,10 +64,15 @@ public class PartnerController implements ControllerInterface  {
                 return true;
             }
             case "4": {
-                System.out.println("comming soon");
+                System.out.println("activar invitado");
                 return true;
             }
-            case "5":{
+            case "5": {
+                System.out.println("desactivar invitado");
+                return true;
+            }
+            
+            case "6":{
                 System.out.println("se cierra sesion");
                 return false;
             }
@@ -125,4 +130,13 @@ public class PartnerController implements ControllerInterface  {
             partnerDto.setType(true);
     }
     
+    private void disableGuest()throws Exception{
+        System.out.println("desactivar invitado");
+        System.out.println("numero de cedula del invitado");
+        long document = personValidator.validDocument(Utils.getReader().nextLine());
+        this.service.disableGuest(long document);
+    }
+    private void activateGuest()throws Exception{
+        System.out.println("desactivar invitado"); 
+    }
 }
