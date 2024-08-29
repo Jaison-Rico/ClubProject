@@ -134,7 +134,7 @@ public class PartnerController implements ControllerInterface  {
         System.out.println("desactivar invitado");
         System.out.println("numero de cedula del invitado");
         long document = personValidator.validDocument(Utils.getReader().nextLine());
-        this.service.disableGuest(long document);
+        //this.service.disableGuest(long document);
     }
     private void activateGuest()throws Exception{
         System.out.println("desactivar invitado"); 
