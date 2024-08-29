@@ -53,6 +53,7 @@ public class Service implements LoginService, AdminService, PartnerService {
     
     private void createUser(UserDto userDto) throws Exception{
         this.createPerson(userDto.getPersonId());
+        userDto.setPersonId(personDao.findByDocument(userDto.getPersonId()));
 	if(this.userDao.existsByUserName(userDto)) {
             this.personDao.deletePerson(userDto.getPersonId());
             throw new Exception("ya existe un usuario con ese user name");

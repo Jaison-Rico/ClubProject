@@ -20,8 +20,8 @@ public abstract interface Helper {
 	Person person = new Person();
 	person.setId(personDto.getId());
 	person.setDocument(personDto.getDocument());
-	person.setName(person.getName());
-	person.setCellphone(person.getCellphone());
+	person.setName(personDto.getName());
+	person.setCellphone(personDto.getCellphone());
 	return person;
     }
 	
