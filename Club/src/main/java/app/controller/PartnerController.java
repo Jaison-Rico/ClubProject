@@ -20,8 +20,9 @@ public class PartnerController implements ControllerInterface  {
         + "\n 1. Crear invitado"
         + "\n 2. incremento de fondo"
         + "\n 3. solicitud a VIP"
-        + "\n 4. baja de socio"
-        + "\n 5. cerrar sesion";
+        + "\n 4. habilitar invitado"
+        + "\n 5. deshabilitar invitado"
+        + "\n 6. cerrar sesion";
 
     public PartnerController() {
         super();
@@ -68,10 +69,9 @@ public class PartnerController implements ControllerInterface  {
                 return true;
             }
             case "5": {
-                System.out.println("desactivar invitado");
+                disableGuest();
                 return true;
-            }
-            
+            }         
             case "6":{
                 System.out.println("se cierra sesion");
                 return false;
@@ -132,7 +132,7 @@ public class PartnerController implements ControllerInterface  {
         System.out.println("desactivar invitado");
         System.out.println("numero de cedula del invitado");
         long document = personValidator.validDocument(Utils.getReader().nextLine());
-        //this.service.disableGuest(long document);
+        this.service.disableGuest(document);
     }
     private void activateGuest()throws Exception{
         System.out.println("desactivar invitado"); 

@@ -75,7 +75,8 @@ public class Service implements LoginService, AdminService, PartnerService {
 
     @Override
     public void disableGuest(long document) throws Exception {
-        //
+        GuestDto guestDto = new GuestDto();
+        guestDto.setStatus(false);
     }
 
 }
