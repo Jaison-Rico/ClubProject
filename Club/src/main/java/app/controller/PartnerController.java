@@ -107,8 +107,7 @@ public class PartnerController implements ControllerInterface  {
             GuestDto guestDto = new GuestDto();
             guestDto.setUserId(userDto);
             guestDto.setStatus(true);
-            // como saber que partner pasar
-            this.service.createGuest(guestDto);
+            this.service.createGuest(userDto);
             System.out.println("se ha creado el usuario exitosamente");
     }
     

@@ -31,7 +31,7 @@ public class GuestController implements ControllerInterface{
     private boolean options(String option) throws Exception {
 	switch (option) {
             case "1": {
-		//this.CrateInvoice();
+		this.CreateInvoice();
 		return true;
             }
             case "2":{

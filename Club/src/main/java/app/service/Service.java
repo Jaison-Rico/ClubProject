@@ -47,24 +47,24 @@ public class Service implements LoginService, AdminService, PartnerService {
     }
 
     @Override
-    public void createGuest(GuestDto guestDto) throws Exception {
-        this.createGuest(guestDto);
+    public void createGuest(UserDto userDto) throws Exception {
+        this.createUser(userDto);
     }
     
     private void createUser(UserDto userDto) throws Exception{
-		this.createPerson(userDto.getPersonId());
-		if(this.userDao.existsByUserName(userDto)) {
-			this.personDao.deletePerson(userDto.getPersonId());
-			throw new Exception("ya existe un usuario con ese user name");
-		}
-		this.userDao.createUser(userDto);
+        this.createPerson(userDto.getPersonId());
+	if(this.userDao.existsByUserName(userDto)) {
+            this.personDao.deletePerson(userDto.getPersonId());
+            throw new Exception("ya existe un usuario con ese user name");
+            }
+            this.userDao.createUser(userDto);
 	}
-	private void createPerson(PersonDto personDto)throws Exception{
-		if(this.personDao.existsByDocument(personDto)) {
-			throw new Exception("ya existe una persona con ese documento");
-		}
-		this.personDao.createPerson(personDto);
+    private void createPerson(PersonDto personDto)throws Exception{
+	if(this.personDao.existsByDocument(personDto)) {
+        throw new Exception("ya existe una persona con ese documento");
 	}
+        this.personDao.createPerson(personDto);
+    }
 
   
     // como vali8dar y hacer la promocion a vips
@@ -72,10 +72,5 @@ public class Service implements LoginService, AdminService, PartnerService {
     public void promotiontovip(PersonDto personDto) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
-
-    
-
-    
-
 
 }
