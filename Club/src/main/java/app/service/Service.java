@@ -1,8 +1,11 @@
 package app.service;
 
+import app.controller.Utils;
+import app.dao.GuestDaoImplementation;
 import app.dao.PartnerDaoImplementation;
 import app.dao.PersonDaoImplementation;
 import app.dao.UserDaoImplementation;
+import app.dao.interfaces.GuestDao;
 import app.dao.interfaces.PartnerDao;
 import app.dao.interfaces.PersonDao;
 import app.dao.interfaces.UserDao;
@@ -19,12 +22,14 @@ public class Service implements LoginService, AdminService, PartnerService {
     private UserDao userDao;
     private PersonDao personDao;
     private PartnerDao partnerDao;
+    private GuestDao guestDao;
     public static UserDto user;
     
     public Service(){
         this.userDao = new UserDaoImplementation();
         this.personDao = new PersonDaoImplementation();
         this.partnerDao = new PartnerDaoImplementation();
+        this.guestDao = new GuestDaoImplementation();
     }
     
     
@@ -60,8 +65,11 @@ public class Service implements LoginService, AdminService, PartnerService {
     }
 
     @Override
-    public void createGuest(UserDto userDto) throws Exception {
-        this.createUser(userDto);
+    public void createGuest(GuestDto GuestDto) throws Exception {
+        this.createUser(GuestDto.getUserId());
+        //GuestDto.setUserId(userDao.findByUserName(GuestDto.getUserId()));
+        this.guestDao.createGuest(GuestDto);
+        
     }
     
     private void createUser(UserDto userDto) throws Exception{
