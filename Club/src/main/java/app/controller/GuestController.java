@@ -49,11 +49,5 @@ public class GuestController implements ControllerInterface{
     private void CreateInvoice() throws Exception {
         System.out.println("crear factura");
     }
-    
-    
-    
-    
-    
-    
-    
+         
 }

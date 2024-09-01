@@ -85,47 +85,45 @@ public class PartnerController implements ControllerInterface  {
     
     private void CreateGuest() throws Exception{
         System.out.println("ingrese el nombre del invitado");
-            String name = Utils.getReader().nextLine();
-            personValidator.validName(name);
-            System.out.println("ingrese la cedula del invitado");
-            long document = personValidator.validDocument(Utils.getReader().nextLine());
-            System.out.println("ingrese el numero de ceular del invitado");
-            long cellPhone = personValidator.validCellphone(Utils.getReader().nextLine());
-            System.out.println("ingrese el nombre de usuario del invitado");
-            String userName = Utils.getReader().nextLine();
-            userValidator.validUserName(userName);
-            System.out.println("ingrese la contraseña del invitado");
-            String password = Utils.getReader().nextLine();
-            userValidator.validPassword(password);
-
-            PersonDto personDto = new PersonDto();
-            personDto.setName(name);
-            personDto.setDocument(document);
-            personDto.setCellphone(cellPhone);
-            UserDto userDto = new UserDto();
-            userDto.setPersonId(personDto);
-            userDto.setUserName(userName);
-            userDto.setPassword(password);
-            userDto.setRole("guest");
-            GuestDto guestDto = new GuestDto();
-            guestDto.setUserId(userDto);
-            guestDto.setStatus(true);
-            this.service.createGuest(userDto);
-            System.out.println("se ha creado el usuario exitosamente");
+        String name = Utils.getReader().nextLine();
+        personValidator.validName(name);
+        System.out.println("ingrese la cedula del invitado");
+        long document = personValidator.validDocument(Utils.getReader().nextLine());
+        System.out.println("ingrese el numero de ceular del invitado");
+        long cellPhone = personValidator.validCellphone(Utils.getReader().nextLine());
+        System.out.println("ingrese el nombre de usuario del invitado");
+        String userName = Utils.getReader().nextLine();
+        userValidator.validUserName(userName);
+        System.out.println("ingrese la contraseña del invitado");
+        String password = Utils.getReader().nextLine();
+        userValidator.validPassword(password);
+        PersonDto personDto = new PersonDto();
+        personDto.setName(name);
+        personDto.setDocument(document);
+        personDto.setCellphone(cellPhone);
+        UserDto userDto = new UserDto();
+        userDto.setPersonId(personDto);
+        userDto.setUserName(userName);
+        userDto.setPassword(password);
+        userDto.setRole("guest");
+        GuestDto guestDto = new GuestDto();
+        guestDto.setUserId(userDto);
+        guestDto.setStatus(true);
+        this.service.createGuest(userDto);
+        System.out.println("se ha creado el usuario exitosamente");
     }
     
     private void incrementAmount() throws Exception{
         System.out.println("Ingrese el monto que desea aumentar");
-            double amount = Utils.getReader().nextDouble();
-     
-            PartnerDto partnerDto = new PartnerDto();
-            partnerDto.setAmount(amount);
+        double amount = Utils.getReader().nextDouble();
+        PartnerDto partnerDto = new PartnerDto();
+        partnerDto.setAmount(amount);
     }
     
     private void vipPromotion() throws Exception{
         System.out.println("Ascender socio regular a VIP");    
-            PartnerDto partnerDto = new PartnerDto();
-            partnerDto.setType(true);
+        PartnerDto partnerDto = new PartnerDto();
+        partnerDto.setType(true);
     }
     
     private void disableGuest()throws Exception{

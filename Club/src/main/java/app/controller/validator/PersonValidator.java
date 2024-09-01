@@ -3,7 +3,7 @@ package app.controller.validator;
 
 
 public class PersonValidator extends CommonsValidator{
-     public void validName(String name) throws Exception {
+    public void validName(String name) throws Exception {
         super.isValidString("El nombre de la persona", name);
     }
     

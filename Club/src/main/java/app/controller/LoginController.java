@@ -20,7 +20,6 @@ public class LoginController implements ControllerInterface{
     public LoginController(){
         this.userValidator = new UserValidator();
         this.service = new Service();
-        
         ControllerInterface adminController = new AdminController();
         ControllerInterface guestController = new GuestController();
         ControllerInterface partnerController = new PartnerController();
