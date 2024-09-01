@@ -13,8 +13,7 @@ import java.sql.ResultSet;
 public class UserDaoImplementation implements UserDao{   
 	
 	@Override
-    public UserDto findByUserName(UserDto userDto) throws Exception {
-            
+        public UserDto findByUserName(UserDto userDto) throws Exception {     
             String query = "SELECT ID,USERNAME,PASSWORD,ROLE,PERSONID FROM USER WHERE USERNAME = ?";
             PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
             preparedStatement.setString(1, userDto.getUserName());
