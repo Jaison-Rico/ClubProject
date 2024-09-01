@@ -101,8 +101,8 @@ public  class AdminController implements ControllerInterface{
         partnerDto.setUserId(userDto);
         partnerDto.setType(true);
         partnerDto.setAmount(amount);
-        partnerDto.setCreationDate(Utils.getDate());
-        this.service.createPartner(userDto);
+        partnerDto.setCreationDate(Utils.getDate());   
+        this.service.createPartner(partnerDto);
 	System.out.println("se ha creado el usuario exitosamente");
     }  
 }

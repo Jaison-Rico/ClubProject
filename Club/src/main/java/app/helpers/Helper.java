@@ -52,21 +52,21 @@ public abstract interface Helper {
     
     public static PartnerDto parse(Partner partner) {
         PartnerDto partnerDto = new PartnerDto();
-        partnerDto.setId(partnerDto.getId());
-        partnerDto.setUserId(partnerDto.getUserId());
-        partnerDto.setAmount(partnerDto.getAmount());
-        partnerDto.setType(partnerDto.isType());
+        partnerDto.setId(partner.getId());
+        partnerDto.setUserId(parse(partner.getUserId()));
+        partnerDto.setAmount(partner.getAmount());
+        partnerDto.setType(partner.isType());
         partnerDto.setCreationDate((Date) partner.getCreationDate());
         return partnerDto;
     }
     
     public static Partner parse(PartnerDto partnerDto) {
         Partner partner = new Partner();
-        partner.setId(partner.getId());
-        partner.setUserId(partner.getUserId());
-        partner.setAmount(partner.getAmount());
-        partner.setType(partner.isType());
-        partner.setCreationDate(partner.getCreationDate());
+        partner.setId(partnerDto.getId());
+        partner.setUserId(parse(partnerDto.getUserId()));
+        partner.setAmount(partnerDto.getAmount());
+        partner.setType(partnerDto.isType());
+        partner.setCreationDate(partnerDto.getCreationDate());
         return partner;
     }
     
@@ -80,10 +80,9 @@ public abstract interface Helper {
     
     public static Guest parse(GuestDto guestDto) {
         Guest guest = new Guest();
-        guest.setId(guest.getId());
-        guest.setPartnerId(guest.getPartnerId());
-        guest.setStatus(guest.isStatus());
+        guest.setId(guestDto.getId());
+        guest.setPartnerId(parse(guestDto.getPartnerId()));
+        guest.setStatus(guestDto.isStatus());
         return guest;
-    
     }
 }
