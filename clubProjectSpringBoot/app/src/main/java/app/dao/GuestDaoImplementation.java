@@ -6,22 +6,18 @@ import app.helpers.Helper;
 import app.model.Guest;
 import java.sql.PreparedStatement;
 import app.dao.interfaces.GuestDao;
+import app.dao.repository.GuestRepository;
 import app.dto.PartnerDto;
-import app.dto.UserDto;
 import app.model.Partner;
 import app.model.User;
 import java.sql.ResultSet;
 
 public class GuestDaoImplementation implements GuestDao{
-        
+    public GuestRepository guestRepository;   
     @Override
     public void createGuest(GuestDto guestDto) throws Exception{
         Guest guest = Helper.parse(guestDto);
-        String query = "INSERT INTO GUEST(USERID, PARTNERID, STATUS) VALUES (?,?,?)";
-        PreparedStatement preparedStatement = MYSQLConnection.getConnection().prepareStatement(query);
-        preparedStatement.setLong(1, guest.getUserId().getId());
-        preparedStatement.setLong(2, guest.getPartnerId().getId());
-        preparedStatement.setBoolean(3, guest.isStatus());        
+        guestRepository.save(guest);        
     }
         
     @Override
