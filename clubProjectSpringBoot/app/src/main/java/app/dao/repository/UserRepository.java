@@ -3,7 +3,9 @@ package app.dao.repository;
 
 import app.dto.UserDto;
 import app.model.User;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserRepository {
 
     public UserDto findByUserName(String userName);

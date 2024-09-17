@@ -4,10 +4,14 @@
  */
 package app.dao.repository;
 
+import app.model.Guest;
+
 /**
  *
  * @author owenu
  */
 public interface GuestRepository {
+
+    public void save(Guest guest);
     
 }

@@ -3,7 +3,7 @@ package app.controller;
 
 import app.controller.validator.UserValidator;
 import app.dto.UserDto;
-import app.service.Service;
+import app.service.ClubService;
 import app.service.interfaces.LoginService;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class LoginController implements ControllerInterface{
     private Map<String, ControllerInterface> roles;    
     public LoginController(){
         this.userValidator = new UserValidator();
-        this.service = new Service();
+        this.service = new ClubService();
         ControllerInterface adminController = new AdminController();
         ControllerInterface guestController = new GuestController();
         ControllerInterface partnerController = new PartnerController();

@@ -7,7 +7,7 @@ import app.dto.GuestDto;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
-import app.service.Service;
+import app.service.ClubService;
 import app.service.interfaces.PartnerService;
 
 public class PartnerController implements ControllerInterface  {
@@ -29,7 +29,7 @@ public class PartnerController implements ControllerInterface  {
         this.personValidator = new PersonValidator();
         this.userValidator = new UserValidator();
         this.partnerValidator = new PartnerValidator();
-        this.service = new Service();
+        this.service = new ClubService();
     }
 
     public void session() throws Exception {

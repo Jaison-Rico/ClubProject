@@ -11,7 +11,13 @@ import app.dto.PartnerDto;
 import app.model.Partner;
 import app.model.User;
 import java.sql.ResultSet;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class GuestDaoImplementation implements GuestDao{
     public GuestRepository guestRepository;   
     @Override

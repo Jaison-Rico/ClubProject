@@ -6,9 +6,16 @@ import app.dao.repository.UserRepository;
 import app.dto.UserDto;
 import app.helpers.Helper;
 import app.model.User; 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Repository;
 
 
-
+@Getter
+@Setter
+@NoArgsConstructor
+@Repository
 public class UserDaoImplementation implements UserDao{   
     public UserRepository UserRepository;
     @Override

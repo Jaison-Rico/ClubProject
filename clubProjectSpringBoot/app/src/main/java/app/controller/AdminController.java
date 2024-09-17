@@ -6,7 +6,7 @@ import app.controller.validator.UserValidator;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
-import app.service.Service;
+import app.service.ClubService;
 import app.service.interfaces.AdminService;
 
 public  class AdminController implements ControllerInterface{
@@ -22,7 +22,7 @@ public  class AdminController implements ControllerInterface{
 
     public AdminController() {
         super();
-        this.service = new Service();
+        this.service = new ClubService();
         this.personValidator = new PersonValidator();
         this.userValidator = new UserValidator();
         this.partnerValidator = new PartnerValidator();

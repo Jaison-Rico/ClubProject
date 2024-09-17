@@ -17,7 +17,7 @@ import app.service.interfaces.AdminService;
 import app.service.interfaces.LoginService;
 import app.service.interfaces.PartnerService;
 
-public class Service implements LoginService, AdminService, PartnerService {
+public class ClubService implements LoginService, AdminService, PartnerService {
 
     private UserDao userDao;
     private PersonDao personDao;
@@ -25,7 +25,7 @@ public class Service implements LoginService, AdminService, PartnerService {
     private GuestDao guestDao;
     public static UserDto user;
     
-    public Service(){
+    public ClubService(){
         this.userDao = new UserDaoImplementation();
         this.personDao = new PersonDaoImplementation();
         this.partnerDao = new PartnerDaoImplementation();
