@@ -5,6 +5,7 @@ import app.model.Partner;
 import app.dao.interfaces.PartnerDao;
 import app.dao.repository.PartnerRepository;
 
+
 public class PartnerDaoImplementation implements PartnerDao{
     public PartnerRepository partnerRepository;
     @Override    
@@ -16,6 +17,6 @@ public class PartnerDaoImplementation implements PartnerDao{
         @Override
         public void deletePartner(PartnerDto partnerDto) throws Exception {
             Partner partner = Helper.parse(partnerDto);
-            partnerRepository.Delete(partner);
+            partnerRepository.delete(partner);
         }
 }

@@ -2,11 +2,7 @@
 package app.dao.repository;
 
 import app.model.Partner;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PartnerRepository {
-
-    public void Delete(Partner partner);
-
-    public void save(Partner partner);
-    
+public interface PartnerRepository extends JpaRepository<Partner, Long>{
 }
