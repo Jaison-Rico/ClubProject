@@ -29,6 +29,7 @@ public class PersonDaoImplementation implements PersonDao {
     public void createPerson(PersonDto personDto) throws Exception {
         Person person = Helper.parse(personDto);
 	personRepository.save(person);
+        personDto.setId(person.getId());
         
     }
 
@@ -36,7 +37,6 @@ public class PersonDaoImplementation implements PersonDao {
     public void deletePerson(PersonDto personDto)throws Exception {     
         Person person = Helper.parse(personDto);
         personRepository.delete(person);
-        personDto.setId(person.getId());
     }
 
     @Override

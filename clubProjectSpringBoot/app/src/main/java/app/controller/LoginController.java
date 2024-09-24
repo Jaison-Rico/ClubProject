@@ -13,7 +13,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-@NoArgsConstructor
+
 @Setter
 @Getter
 @Controller
@@ -23,9 +23,10 @@ public class LoginController implements ControllerInterface{
     @Autowired
     private LoginService service;
     
-    private static final String MENU = "ingrese la opcion que desea:"
-        + "\n1.inicar sesion"
-        + "\n2. detener la ejecucion";
+    private static final String MENU = """
+                                       ingrese la opcion que desea:
+                                       1.inicar sesion
+                                       2. detener la ejecucion""";
     
     private Map<String, ControllerInterface> roles;    
     public LoginController(AdminController adminController, GuestController guestController, PartnerController partnerController){
@@ -36,6 +37,7 @@ public class LoginController implements ControllerInterface{
     }
     
     
+    @Override
    public void session() throws Exception {
 	boolean session = true;
 	while (session) {
@@ -56,16 +58,16 @@ public class LoginController implements ControllerInterface{
 
     private boolean options(String option) throws Exception {
         switch (option) {
-            case "1": {
+            case "1" -> {
 		this.login();
 		return true;
                 }
-            case "2": {
+            case "2" -> {
                 System.out.println("Se detiene el programa");
 		return false;
 		
 		}
-            default: {
+            default -> {
 		System.out.println("ingrese un valor valido");
 		return true;
 		}

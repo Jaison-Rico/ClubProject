@@ -30,6 +30,6 @@ public class Partner {
     private double amount;
     @Column(name = "type")
     private boolean type;
-    @Column(name = "creationDate")
+    @Column(name = "creationdate")
     private Date creationDate;
 }
