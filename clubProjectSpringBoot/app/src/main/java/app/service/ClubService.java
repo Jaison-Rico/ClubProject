@@ -1,6 +1,6 @@
 package app.service;
 
-import app.controller.Utils;
+
 import app.dao.GuestDaoImplementation;
 import app.dao.PartnerDaoImplementation;
 import app.dao.PersonDaoImplementation;
@@ -16,21 +16,29 @@ import app.dto.UserDto;
 import app.service.interfaces.AdminService;
 import app.service.interfaces.LoginService;
 import app.service.interfaces.PartnerService;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class Service implements LoginService, AdminService, PartnerService {
 
+@Getter
+@Setter
+@NoArgsConstructor
+@Service
+public class ClubService implements LoginService, AdminService, PartnerService {
+    
+    @Autowired
     private UserDao userDao;
+    @Autowired
     private PersonDao personDao;
+    @Autowired
     private PartnerDao partnerDao;
+    @Autowired
     private GuestDao guestDao;
     public static UserDto user;
     
-    public Service(){
-        this.userDao = new UserDaoImplementation();
-        this.personDao = new PersonDaoImplementation();
-        this.partnerDao = new PartnerDaoImplementation();
-        this.guestDao = new GuestDaoImplementation();
-    }
     
     
     public void login(UserDto userDto) throws Exception {
@@ -67,14 +75,12 @@ public class Service implements LoginService, AdminService, PartnerService {
     @Override
     public void createGuest(GuestDto GuestDto) throws Exception {
         this.createUser(GuestDto.getUserId());
-        //GuestDto.setUserId(userDao.findByUserName(GuestDto.getUserId()));
         this.guestDao.createGuest(GuestDto);
         
     }
     
     private void createUser(UserDto userDto) throws Exception{
         this.createPerson(userDto.getPersonId());
-        userDto.setPersonId(personDao.findByDocument(userDto.getPersonId()));
 	if(this.userDao.existsByUserName(userDto)) {
             this.personDao.deletePerson(userDto.getPersonId());
             throw new Exception("ya existe un usuario con ese user name");

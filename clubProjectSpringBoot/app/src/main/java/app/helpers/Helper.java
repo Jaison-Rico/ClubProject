@@ -73,7 +73,7 @@ public abstract interface Helper {
     public static GuestDto parse(Guest guest) {
         GuestDto guestDto = new GuestDto();
         guestDto.setId(guest.getId());
-        guestDto.setPartnerId(parse(guest.getPartnerId())); //solo funciona con ese parse
+        guestDto.setPartnerId(parse(guest.getPartnerId()));
         guestDto.setStatus(guest.isStatus());
         return guestDto;
     }

@@ -1,7 +1,15 @@
 package app.controller;
 
 import app.controller.validator.PersonValidator;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Controller;
 
+@NoArgsConstructor
+@Setter
+@Getter
+@Controller
 public class GuestController implements ControllerInterface{
     
     @Override

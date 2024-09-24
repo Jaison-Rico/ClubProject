@@ -6,13 +6,27 @@ import app.controller.validator.UserValidator;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
-import app.service.Service;
+import app.service.ClubService;
 import app.service.interfaces.AdminService;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Controller
 public  class AdminController implements ControllerInterface{
+    @Autowired
     private PersonValidator personValidator;
+    @Autowired
     private UserValidator userValidator;
+    @Autowired
     private PartnerValidator partnerValidator;
+    @Autowired
     private AdminService service;
     private static final String MENU = "ingrese la opcion que desea realizar "
         + "\n 1. para crear Socio "
@@ -20,13 +34,7 @@ public  class AdminController implements ControllerInterface{
         + "\n 3. promocion a VIP"
         + "\n 4. cerrar sesion";
 
-    public AdminController() {
-        super();
-        this.service = new Service();
-        this.personValidator = new PersonValidator();
-        this.userValidator = new UserValidator();
-        this.partnerValidator = new PartnerValidator();
-    }
+
     
     public void session() throws Exception {
 	boolean session = true;

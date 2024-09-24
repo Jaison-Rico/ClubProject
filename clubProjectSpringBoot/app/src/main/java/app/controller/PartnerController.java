@@ -7,13 +7,26 @@ import app.dto.GuestDto;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
-import app.service.Service;
+import app.service.ClubService;
 import app.service.interfaces.PartnerService;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
+@NoArgsConstructor
+@Setter
+@Getter
+@Controller
 public class PartnerController implements ControllerInterface  {
+    @Autowired
     private PersonValidator personValidator;
+    @Autowired
     private UserValidator userValidator;
+    @Autowired
     private PartnerValidator partnerValidator;
+    @Autowired
     private PartnerService service;
     
     private static final String MENU = "ingrese la opcion que desea realizar "
@@ -24,13 +37,7 @@ public class PartnerController implements ControllerInterface  {
         + "\n 5. deshabilitar invitado"
         + "\n 6. cerrar sesion";
 
-    public PartnerController() {
-        super();
-        this.personValidator = new PersonValidator();
-        this.userValidator = new UserValidator();
-        this.partnerValidator = new PartnerValidator();
-        this.service = new Service();
-    }
+   
 
     public void session() throws Exception {
         boolean session = true;

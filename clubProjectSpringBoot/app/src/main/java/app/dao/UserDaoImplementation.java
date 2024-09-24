@@ -6,10 +6,18 @@ import app.dao.repository.UserRepository;
 import app.dto.UserDto;
 import app.helpers.Helper;
 import app.model.User; 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-
-
+@Getter
+@Setter
+@NoArgsConstructor
+@Service
 public class UserDaoImplementation implements UserDao{   
+    @Autowired
     public UserRepository UserRepository;
     @Override
     public UserDto findByUserName(UserDto userDto) throws Exception {     
