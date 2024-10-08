@@ -62,20 +62,20 @@ public class ClubService implements LoginService, AdminService, PartnerService {
     @Override
     public void createPartner(PartnerDto partnerDto) throws Exception {
         this.createUser(partnerDto.getUserId());
-        partnerDto.setUserId(userDao.findByUserName(partnerDto.getUserId()));
-        if(partnerDto.getAmount() < 50000){
+        /*if(partnerDto.getAmount() < 50000){
             this.userDao.deleteUser(partnerDto.getUserId());
             throw  new Exception("El monto inical tiene que ser minimo 50000");  
-        }
+        }*/
         this.partnerDao.createPartner(partnerDto);
         
         
     }
 
     @Override
-    public void createGuest(GuestDto GuestDto) throws Exception {
-        this.createUser(GuestDto.getUserId());
-        this.guestDao.createGuest(GuestDto);
+    public void createGuest(GuestDto guestDto) throws Exception {
+        this.createUser(guestDto.getUserId());
+        guestDto.setPartnerId(partnerDao.findByUserId(user));  
+        this.guestDao.createGuest(guestDto);
         
     }
     

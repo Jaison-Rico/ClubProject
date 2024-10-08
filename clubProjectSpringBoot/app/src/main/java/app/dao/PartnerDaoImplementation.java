@@ -4,6 +4,8 @@ import app.helpers.Helper;
 import app.model.Partner;
 import app.dao.interfaces.PartnerDao;
 import app.dao.repository.PartnerRepository;
+import app.dto.UserDto;
+import app.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,4 +30,13 @@ public class PartnerDaoImplementation implements PartnerDao{
             Partner partner = Helper.parse(partnerDto);
             partnerRepository.delete(partner);
         }
+
+    @Override
+    public PartnerDto findByUserId(UserDto userDto) throws Exception {
+        User user = Helper.parse(userDto);
+        Partner partner = partnerRepository.findByUserId(user);
+        if (partner == null)
+            return null;
+        return Helper.parse(partner);
+    }
 }
