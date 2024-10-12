@@ -47,13 +47,6 @@ public class PersonDaoImplementation implements PersonDao {
        return Helper.parse(person);
     }
 
-    @Override
-    public PersonDto findByUserId(UserDto userDto) throws Exception {
-        User user = Helper.parse(userDto);
-        Person person = personRepository.findByUserId(user);
-        if (person == null)
-            return null;
-        return Helper.parse(person);
-    }
+
 
 }

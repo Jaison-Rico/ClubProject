@@ -26,6 +26,7 @@ public class InvoiceDaoImplementation implements InvoiceDao{
     public void createInvoice(InvoiceDto invoiceDto) throws Exception{
         Invoice invoice = Helper.parse(invoiceDto);
         invoiceRepository.save(invoice);
+        invoiceDto.setId(invoice.getId());
     }
     
 }

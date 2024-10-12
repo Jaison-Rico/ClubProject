@@ -9,5 +9,4 @@ public interface PersonRepository extends JpaRepository<Person, Long>{
     public boolean existsByDocument(long document);
 
     public Person findByDocument(long document);
-    public Person findByUserId(User user);
 }

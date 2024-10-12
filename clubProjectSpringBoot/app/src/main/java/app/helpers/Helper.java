@@ -1,12 +1,14 @@
 package app.helpers;
 
 import app.dto.GuestDto;
+import app.dto.InvoiceDetailDto;
 import app.dto.InvoiceDto;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
 import app.model.Guest;
 import app.model.Invoice;
+import app.model.InvoiceDetail;
 import app.model.Partner;
 import app.model.Person;
 import app.model.User;
@@ -124,5 +126,28 @@ public abstract interface Helper {
         invoice.setAmount(invoiceDto.getAmount());
         invoice.setStatus(invoiceDto.isStatus());
         return invoice;
+    }
+    
+    
+    public static InvoiceDetailDto parse(InvoiceDetail invoiceDetail ){
+        InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
+        invoiceDetailDto.setId(invoiceDetail.getId());
+        if(invoiceDetailDto.getInvoiceId() != null){    
+            invoiceDetailDto.setInvoiceId(parse(invoiceDetail.getInvoiceId()));
+        }
+        invoiceDetailDto.setItem(invoiceDetail.getItem());
+        invoiceDetailDto.setDescription(invoiceDetail.getDescription());
+        invoiceDetailDto.setAmount(invoiceDetail.getAmount());
+        return  invoiceDetailDto;
+    }
+    
+    public static InvoiceDetail parse(InvoiceDetailDto invoiceDetailDto ){
+        InvoiceDetail invoiceDetail = new InvoiceDetail();
+        invoiceDetail.setId(invoiceDetailDto.getId());
+        invoiceDetail.setInvoiceId(parse(invoiceDetailDto.getInvoiceId()));
+        invoiceDetail.setItem(invoiceDetailDto.getItem());
+        invoiceDetail.setDescription(invoiceDetailDto.getDescription());
+        invoiceDetail.setAmount(invoiceDetailDto.getAmount());
+        return  invoiceDetail;
     }
 }

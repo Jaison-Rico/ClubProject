@@ -21,13 +21,15 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import app.dao.interfaces.InvoiceDao;
+import app.dao.interfaces.InvoiceDetailDao;
+import app.service.interfaces.GuestService;
 
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Service
-public class ClubService implements LoginService, AdminService, PartnerService {
+public class ClubService implements LoginService, AdminService, PartnerService, GuestService {
     
     @Autowired
     private UserDao userDao;
@@ -39,6 +41,8 @@ public class ClubService implements LoginService, AdminService, PartnerService {
     private GuestDao guestDao;
     @Autowired
     private InvoiceDao invoiceDao;
+    @Autowired
+    private InvoiceDetailDao invoideDetailDao;
     public static UserDto user;
     
     
@@ -94,11 +98,26 @@ public class ClubService implements LoginService, AdminService, PartnerService {
         this.personDao.createPerson(personDto);
     }
 
+    
+    
+
+    @Override
+    public void createInvoiceDetail(InvoiceDetailDto invoiceDetailDto) throws Exception {
+      this.createInvoice(invoiceDetailDto.getInvoiceId());
+      this.invoideDetailDao.createInvoiceDetail(invoiceDetailDto);
+    }
+    
+    @Override
     public void createInvoice(InvoiceDto InvoiceDto) throws Exception {
         InvoiceDto.setPartnerId(partnerDao.findByUserId(user));
-        InvoiceDto.setPersonId(personDao.findByUserId(user));
+        InvoiceDto.setPersonId(user.getPersonId());
         this.invoiceDao.createInvoice(InvoiceDto);
     }
+
+    
+    
+    
+    
     
     
     
@@ -130,13 +149,5 @@ public class ClubService implements LoginService, AdminService, PartnerService {
         GuestDto guestDto = new GuestDto();
         guestDto.setStatus(false);
     }
-
-    @Override
-    public void createInvoiceDetail(InvoiceDetailDto invoiceDetailDto) throws Exception {
-      
-    }
-    
-    
-
 
 }

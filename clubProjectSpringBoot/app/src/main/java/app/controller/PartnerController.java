@@ -156,7 +156,7 @@ public class PartnerController implements ControllerInterface  {
         invoiceDetailDto.setItem(item);
         invoiceDetailDto.setDescription(description);
         invoiceDetailDto.setAmount(amount);
-        this.service.createInvoice(invoiceDto);
+        this.service.createInvoiceDetail(invoiceDetailDto);
         System.out.println("se ha creado la factura exitosamente");
         
     }
