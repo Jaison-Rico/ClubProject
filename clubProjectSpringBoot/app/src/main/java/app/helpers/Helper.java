@@ -1,10 +1,12 @@
 package app.helpers;
 
 import app.dto.GuestDto;
+import app.dto.InvoiceDto;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
 import app.model.Guest;
+import app.model.Invoice;
 import app.model.Partner;
 import app.model.Person;
 import app.model.User;
@@ -59,7 +61,7 @@ public abstract interface Helper {
 
         partnerDto.setAmount(partner.getAmount());
         partnerDto.setType(partner.isType());
-        partnerDto.setCreationDate((Date) partner.getCreationDate());
+        partnerDto.setCreationDate(partner.getCreationDate());
         return partnerDto;
     }
 
@@ -72,7 +74,7 @@ public abstract interface Helper {
         }
         partner.setAmount(partnerDto.getAmount());
         partner.setType(partnerDto.isType());
-        partner.setCreationDate(partnerDto.getCreationDate());
+        partner.setCreationDate( (Date) partnerDto.getCreationDate());
         return partner;
     }
 
@@ -96,5 +98,31 @@ public abstract interface Helper {
             guest.setUserId(parse(guestDto.getUserId()));
         }
         return guest;
+    }
+    
+    public static InvoiceDto parse(Invoice invoice){
+        InvoiceDto invoiceDto = new InvoiceDto();
+        invoiceDto.setId(invoice.getId());
+        invoiceDto.setPersonId(parse(invoice.getPersonId()));
+        invoiceDto.setPartnerId(parse(invoice.getPartnerId()));
+        invoiceDto.setCreationDate(invoice.getCreationDate());
+        invoiceDto.setAmount(invoice.getAmount());
+        invoiceDto.setStatus(invoice.isStatus());
+        return invoiceDto;
+    }
+    
+    public static Invoice parse(InvoiceDto invoiceDto){
+        Invoice invoice = new Invoice();
+        invoice.setId(invoiceDto.getId());
+        if(invoiceDto.getPersonId()!= null){
+            invoice.setPersonId(parse(invoiceDto.getPersonId()));
+        }
+        if(invoiceDto.getPartnerId()!= null){
+            invoice.setPartnerId(parse(invoiceDto.getPartnerId()));
+        }
+        invoice.setCreationDate((Date) invoiceDto.getCreationDate());
+        invoice.setAmount(invoiceDto.getAmount());
+        invoice.setStatus(invoiceDto.isStatus());
+        return invoice;
     }
 }

@@ -19,14 +19,14 @@ import org.springframework.stereotype.Service;
 public class PartnerDaoImplementation implements PartnerDao{
     @Autowired
     public PartnerRepository partnerRepository;
-    @Override    
+        
     public void createPartner(PartnerDto partnerDto) throws Exception{
             Partner partner = Helper.parse(partnerDto);
             partnerRepository.save(partner);
         }
 
-        @Override
-        public void deletePartner(PartnerDto partnerDto) throws Exception {
+    @Override
+    public void deletePartner(PartnerDto partnerDto) throws Exception {
             Partner partner = Helper.parse(partnerDto);
             partnerRepository.delete(partner);
         }

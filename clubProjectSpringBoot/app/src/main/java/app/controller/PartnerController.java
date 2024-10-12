@@ -1,9 +1,12 @@
 package app.controller;
 
+import app.controller.validator.InvoiceValidator;
 import app.controller.validator.PartnerValidator;
 import app.controller.validator.PersonValidator;
 import app.controller.validator.UserValidator;
 import app.dto.GuestDto;
+import app.dto.InvoiceDetailDto;
+import app.dto.InvoiceDto;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
@@ -27,6 +30,8 @@ public class PartnerController implements ControllerInterface  {
     @Autowired
     private PartnerValidator partnerValidator;
     @Autowired
+    private InvoiceValidator invoiceValidator;
+    @Autowired
     private PartnerService service;
     
     private static final String MENU = "ingrese la opcion que desea realizar "
@@ -34,8 +39,9 @@ public class PartnerController implements ControllerInterface  {
         + "\n 2. incremento de fondo"
         + "\n 3. solicitud a VIP"
         + "\n 4. habilitar invitado"
-        + "\n 5. deshabilitar invitado"
-        + "\n 6. cerrar sesion";
+        + "\n 5. hacer consumo"
+        + "\n 6. deshabilitar invitado"
+        + "\n 7. cerrar sesion";
 
    
 
@@ -76,10 +82,14 @@ public class PartnerController implements ControllerInterface  {
                 return true;
             }
             case "5": {
+                createInvoice();
+                return true;
+            }
+            case "6":{
                 disableGuest();
                 return true;
-            }         
-            case "6":{
+            }
+            case "7":{
                 System.out.println("se cierra sesion");
                 return false;
             }
@@ -121,6 +131,41 @@ public class PartnerController implements ControllerInterface  {
         this.service.createGuest(guestDto);
         System.out.println("se ha creado el usuario exitosamente");
     }
+    private void createInvoice() throws Exception {
+        
+        
+        System.out.println("ingrese el item de la factura");  
+        int item = invoiceValidator.validItem(Utils.getReader().nextLine());
+        System.out.println("ingrese la descripcion de la factura");  
+        String description = Utils.getReader().nextLine();
+        invoiceValidator.validDescription(description);
+        System.out.println("ingrese el valor de la factura");  
+        double amount = invoiceValidator.validAmount(Utils.getReader().nextLine());
+        
+        PersonDto personDto = new PersonDto();
+        PartnerDto partnerDto = new PartnerDto();
+        //
+        InvoiceDto invoiceDto = new InvoiceDto();
+        invoiceDto.setPersonId(personDto);
+        invoiceDto.setPartnerId(partnerDto);
+        invoiceDto.setStatus(false);
+        invoiceDto.setAmount(amount);
+        invoiceDto.setCreationDate(Utils.getDate()); 
+        InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
+        invoiceDetailDto.setInvoiceId(invoiceDto);
+        invoiceDetailDto.setItem(item);
+        invoiceDetailDto.setDescription(description);
+        invoiceDetailDto.setAmount(amount);
+        this.service.createInvoice(invoiceDto);
+        System.out.println("se ha creado la factura exitosamente");
+        
+    }
+    
+    
+    
+    
+    
+    
     
     private void incrementAmount() throws Exception{
         System.out.println("Ingrese el monto que desea aumentar");
@@ -128,13 +173,11 @@ public class PartnerController implements ControllerInterface  {
         PartnerDto partnerDto = new PartnerDto();
         partnerDto.setAmount(amount);
     }
-    
     private void vipPromotion() throws Exception{
         System.out.println("Ascender socio regular a VIP");    
         PartnerDto partnerDto = new PartnerDto();
         partnerDto.setType(true);
     }
-    
     private void disableGuest()throws Exception{
         System.out.println("desactivar invitado");
         System.out.println("numero de cedula del invitado");
@@ -144,4 +187,5 @@ public class PartnerController implements ControllerInterface  {
     private void activateGuest()throws Exception{
         System.out.println("desactivar invitado"); 
     }
+    
 }

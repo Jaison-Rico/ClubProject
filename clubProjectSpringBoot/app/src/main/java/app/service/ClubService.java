@@ -1,15 +1,14 @@
 package app.service;
 
 
-import app.dao.GuestDaoImplementation;
-import app.dao.PartnerDaoImplementation;
-import app.dao.PersonDaoImplementation;
-import app.dao.UserDaoImplementation;
+
 import app.dao.interfaces.GuestDao;
 import app.dao.interfaces.PartnerDao;
 import app.dao.interfaces.PersonDao;
 import app.dao.interfaces.UserDao;
 import app.dto.GuestDto;
+import app.dto.InvoiceDetailDto;
+import app.dto.InvoiceDto;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
@@ -21,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import app.dao.interfaces.InvoiceDao;
 
 
 @Getter
@@ -37,6 +37,8 @@ public class ClubService implements LoginService, AdminService, PartnerService {
     private PartnerDao partnerDao;
     @Autowired
     private GuestDao guestDao;
+    @Autowired
+    private InvoiceDao invoiceDao;
     public static UserDto user;
     
     
@@ -62,10 +64,6 @@ public class ClubService implements LoginService, AdminService, PartnerService {
     @Override
     public void createPartner(PartnerDto partnerDto) throws Exception {
         this.createUser(partnerDto.getUserId());
-        /*if(partnerDto.getAmount() < 50000){
-            this.userDao.deleteUser(partnerDto.getUserId());
-            throw  new Exception("El monto inical tiene que ser minimo 50000");  
-        }*/
         this.partnerDao.createPartner(partnerDto);
         
         
@@ -96,7 +94,32 @@ public class ClubService implements LoginService, AdminService, PartnerService {
         this.personDao.createPerson(personDto);
     }
 
-  
+    public void createInvoice(InvoiceDto InvoiceDto) throws Exception {
+        InvoiceDto.setPartnerId(partnerDao.findByUserId(user));
+        InvoiceDto.setPersonId(personDao.findByUserId(user));
+        this.invoiceDao.createInvoice(InvoiceDto);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @Override
     public void promotiontovip(PersonDto personDto) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); 
@@ -108,6 +131,12 @@ public class ClubService implements LoginService, AdminService, PartnerService {
         guestDto.setStatus(false);
     }
 
+    @Override
+    public void createInvoiceDetail(InvoiceDetailDto invoiceDetailDto) throws Exception {
+      
+    }
+    
+    
 
 
 }
