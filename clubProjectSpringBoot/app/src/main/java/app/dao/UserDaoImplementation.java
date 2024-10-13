@@ -61,4 +61,12 @@ public class UserDaoImplementation implements UserDao{
             return null;
         return Helper.parse(user);
     }
+    
+    
+    @Override
+    public void convertPartner(UserDto userDto) throws Exception {
+        User user = Helper.parse(userDto);
+        user.setRole("partner");
+        UserRepository.save(user);
+    }
 }

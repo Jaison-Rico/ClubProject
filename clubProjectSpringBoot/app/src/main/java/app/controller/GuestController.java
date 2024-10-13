@@ -6,6 +6,7 @@ import app.dto.InvoiceDetailDto;
 import app.dto.InvoiceDto;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
+import app.dto.UserDto;
 import app.service.interfaces.GuestService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +34,8 @@ public class GuestController implements ControllerInterface{
     
     private static final String MENU = "ingrese la opcion que desea realizar "
         + "\n 1. Crear Factura"
-        + "\n 2. cerrar sesion";
+        + "\n 2. Conventirse en socio"
+        + "\n 3. cerrar sesion";
     
     
     private boolean menu() {
@@ -54,6 +56,10 @@ public class GuestController implements ControllerInterface{
 		return true;
             }
             case "2":{
+                convertPartner();
+                return false;
+            }
+            case "3":{
                 System.out.println("se cierra sesion");
                 return false;
             }
@@ -65,9 +71,7 @@ public class GuestController implements ControllerInterface{
     }
 
     
-    private void createInvoice() throws Exception {
-        
-        
+    private void createInvoice() throws Exception { 
         System.out.println("ingrese el item de la factura");  
         int item = invoiceValidator.validItem(Utils.getReader().nextLine());
         System.out.println("ingrese la descripcion de la factura");  
@@ -92,6 +96,21 @@ public class GuestController implements ControllerInterface{
         invoiceDetailDto.setAmount(amount);
         this.service.createInvoiceDetail(invoiceDetailDto);
         System.out.println("se ha creado la factura exitosamente");
+        
+    }
+    
+    private void convertPartner() throws Exception {
+        PartnerDto parnetDto = new PartnerDto();
+        UserDto userDto = new UserDto();
+        System.out.println("ingrese el fondo inial");
+        double amount = invoiceValidator.validAmount(Utils.getReader().nextLine());
+        parnetDto.setUserId(userDto);
+        parnetDto.setAmount(amount);
+        parnetDto.setType(true);
+        parnetDto.setCreationDate(Utils.getDate());
+        System.out.println("acabas de convertirse en socio");
+        this.service.convertPartner(parnetDto);
+        
         
     }
          

@@ -1,17 +1,13 @@
 package app.dao;
 
-import app.config.MYSQLConnection;
+
 import app.dto.GuestDto;
 import app.helpers.Helper;
 import app.model.Guest;
-import java.sql.PreparedStatement;
 import app.dao.interfaces.GuestDao;
 import app.dao.repository.GuestRepository;
-import app.dto.PartnerDto;
 import app.dto.UserDto;
-import app.model.Partner;
 import app.model.User;
-import java.sql.ResultSet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -53,6 +49,14 @@ public class GuestDaoImplementation implements GuestDao{
            return null;
        return Helper.parse(guest);
     }
+
+    @Override
+    public void deleteGuest(GuestDto guestDto) throws Exception {
+        Guest guest = Helper.parse(guestDto);
+        guestRepository.delete(guest);
+    }
+
+    
 
 
     

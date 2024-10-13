@@ -143,4 +143,16 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
         this.guestDao.enableGuest(guestDto);
     }
 
+    @Override
+    public void convertPartner(PartnerDto partnerDto) throws Exception {
+        this.userDao.convertPartner(user);
+        GuestDto guestDto = new GuestDto();
+        guestDto = this.guestDao.findByUserId(user);
+        partnerDto.setUserId(user);
+        this.partnerDao.createPartner(partnerDto);
+        this.guestDao.deleteGuest(guestDto);
+        
+        
+    }
+
 }
