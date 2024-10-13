@@ -71,7 +71,6 @@ public abstract interface Helper {
         Partner partner = new Partner();
         partner.setId(partnerDto.getId());
         if (partnerDto.getUserId() != null) {
-            System.out.println("user id: " + partnerDto.getUserId().getId());
             partner.setUserId(parse(partnerDto.getUserId()));
         }
         partner.setAmount(partnerDto.getAmount());

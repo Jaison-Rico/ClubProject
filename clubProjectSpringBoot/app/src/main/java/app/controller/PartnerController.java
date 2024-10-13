@@ -78,7 +78,7 @@ public class PartnerController implements ControllerInterface  {
                 return true;
             }
             case "4": {
-                System.out.println("activar invitado");
+                this.enableGuest();
                 return true;
             }
             case "5": {
@@ -132,8 +132,6 @@ public class PartnerController implements ControllerInterface  {
         System.out.println("se ha creado el usuario exitosamente");
     }
     private void createInvoice() throws Exception {
-        
-        
         System.out.println("ingrese el item de la factura");  
         int item = invoiceValidator.validItem(Utils.getReader().nextLine());
         System.out.println("ingrese la descripcion de la factura");  
@@ -160,13 +158,6 @@ public class PartnerController implements ControllerInterface  {
         System.out.println("se ha creado la factura exitosamente");
         
     }
-    
-    
-    
-    
-    
-    
-    
     private void incrementAmount() throws Exception{
         System.out.println("Ingrese el monto que desea aumentar");
         double amount = Utils.getReader().nextDouble();
@@ -183,9 +174,14 @@ public class PartnerController implements ControllerInterface  {
         System.out.println("numero de cedula del invitado");
         long document = personValidator.validDocument(Utils.getReader().nextLine());
         this.service.disableGuest(document);
+        System.out.println("usuario desactivado");
     }
-    private void activateGuest()throws Exception{
-        System.out.println("desactivar invitado"); 
+    private void enableGuest()throws Exception{
+        System.out.println("activar invitado");
+        System.out.println("numero de cedula del invitado");
+        long document = personValidator.validDocument(Utils.getReader().nextLine());
+        this.service.enableGuest(document);
+        System.out.println("usuario activado");
     }
     
 }

@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import app.dao.interfaces.GuestDao;
 import app.dao.repository.GuestRepository;
 import app.dto.PartnerDto;
+import app.dto.UserDto;
 import app.model.Partner;
 import app.model.User;
 import java.sql.ResultSet;
@@ -32,12 +33,25 @@ public class GuestDaoImplementation implements GuestDao{
         
     @Override
     public void disableGuest(GuestDto guestDto) throws Exception{
-        throw new UnsupportedOperationException("Not supported yet.");
+        Guest guest = Helper.parse(guestDto);
+        guest.setStatus(false);
+        guestRepository.save(guest);
     }
         
     @Override
     public void enableGuest(GuestDto guestDto) throws Exception{
-        throw new UnsupportedOperationException("Not supported yet.");
+        Guest guest = Helper.parse(guestDto);
+        guest.setStatus(true);
+        guestRepository.save(guest);
+    }
+
+    @Override
+    public GuestDto findByUserId(UserDto userDto) throws Exception {
+       User user = Helper.parse(userDto);
+       Guest guest = guestRepository.findByUserId(user);
+       if (guest == null)
+           return null;
+       return Helper.parse(guest);
     }
 
 

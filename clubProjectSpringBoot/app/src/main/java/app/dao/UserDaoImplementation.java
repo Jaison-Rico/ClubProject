@@ -3,8 +3,10 @@ package app.dao;
 
 import app.dao.interfaces.UserDao;
 import app.dao.repository.UserRepository;
+import app.dto.PersonDto;
 import app.dto.UserDto;
 import app.helpers.Helper;
+import app.model.Person;
 import app.model.User; 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,5 +51,14 @@ public class UserDaoImplementation implements UserDao{
     public void deleteUser(UserDto userDto) throws Exception {
         User user = Helper.parse(userDto);
 	UserRepository.delete(user);
+    }
+
+    @Override
+    public UserDto findByPersonId(PersonDto personDto) throws Exception {
+       Person person = Helper.parse(personDto);
+       User user = UserRepository.findByPersonId(person);
+        if (user == null)
+            return null;
+        return Helper.parse(user);
     }
 }

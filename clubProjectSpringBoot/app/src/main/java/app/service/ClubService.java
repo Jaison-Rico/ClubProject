@@ -97,10 +97,6 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
 	}
         this.personDao.createPerson(personDto);
     }
-
-    
-    
-
     @Override
     public void createInvoiceDetail(InvoiceDetailDto invoiceDetailDto) throws Exception {
       this.createInvoice(invoiceDetailDto.getInvoiceId());
@@ -114,31 +110,6 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
         this.invoiceDao.createInvoice(InvoiceDto);
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     @Override
     public void promotiontovip(PersonDto personDto) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); 
@@ -146,8 +117,30 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
 
     @Override
     public void disableGuest(long document) throws Exception {
+        PersonDto personDto = new PersonDto();
+        personDto.setDocument(document);
+        personDto = this.personDao.findByDocument(personDto);
+        UserDto userDto = new UserDto();
+        userDto = this.userDao.findByPersonId(personDto);
         GuestDto guestDto = new GuestDto();
-        guestDto.setStatus(false);
+        guestDto = this.guestDao.findByUserId(userDto);
+        this.guestDao.disableGuest(guestDto);
+    }
+
+    @Override
+    public void enableGuest(long document) throws Exception {
+        
+        PersonDto personDto = new PersonDto();
+        personDto.setDocument(document);
+        if(this.personDao.existsByDocument(personDto) == false) {
+            throw new Exception("no existe una persona con ese documento");
+	}
+        personDto = this.personDao.findByDocument(personDto);
+        UserDto userDto = new UserDto();
+        userDto = this.userDao.findByPersonId(personDto);
+        GuestDto guestDto = new GuestDto();
+        guestDto = this.guestDao.findByUserId(userDto);
+        this.guestDao.enableGuest(guestDto);
     }
 
 }
