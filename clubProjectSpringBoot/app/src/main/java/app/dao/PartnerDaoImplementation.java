@@ -39,4 +39,10 @@ public class PartnerDaoImplementation implements PartnerDao{
             return null;
         return Helper.parse(partner);
     }
+
+    @Override
+    public void incrementAmount(PartnerDto partnerDto) throws Exception {
+        Partner partner = Helper.parse(partnerDto);
+        partnerRepository.save(partner);
+    }
 }

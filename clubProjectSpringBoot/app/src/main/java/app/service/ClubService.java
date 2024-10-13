@@ -155,4 +155,13 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
         
     }
 
+    @Override
+    public void incrementAmount(PartnerDto partnerDto) throws Exception {
+        PartnerDto partner = new PartnerDto();
+        partner = this.partnerDao.findByUserId(user);
+        partner.setAmount(partner.getAmount() + partnerDto.getAmount());
+        this.partnerDao.incrementAmount(partner);
+        System.out.println("valor actual del fondo del socio: " + partner.getAmount());
+    }
+
 }

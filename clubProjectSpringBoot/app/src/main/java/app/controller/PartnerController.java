@@ -36,11 +36,11 @@ public class PartnerController implements ControllerInterface  {
     
     private static final String MENU = "ingrese la opcion que desea realizar "
         + "\n 1. Crear invitado"
-        + "\n 2. incremento de fondo"
-        + "\n 3. solicitud a VIP"
-        + "\n 4. habilitar invitado"
+        + "\n 2. habilitar invitado"
+        + "\n 3. deshabilitar invitado"
+        + "\n 4. incremento de fondo"
         + "\n 5. hacer consumo"
-        + "\n 6. deshabilitar invitado"
+        + "\n 6. solicitud a VIP"
         + "\n 7. cerrar sesion";
 
    
@@ -70,15 +70,15 @@ public class PartnerController implements ControllerInterface  {
 		return true;
             }
             case "2": {
-                this.incrementAmount();
+                this.enableGuest();
 		return true;
             }
             case "3":{
-                this.vipPromotion();
+               this.disableGuest();
                 return true;
             }
             case "4": {
-                this.enableGuest();
+                this.incrementAmount();
                 return true;
             }
             case "5": {
@@ -86,7 +86,7 @@ public class PartnerController implements ControllerInterface  {
                 return true;
             }
             case "6":{
-                disableGuest();
+                this.vipPromotion();
                 return true;
             }
             case "7":{
@@ -160,9 +160,10 @@ public class PartnerController implements ControllerInterface  {
     }
     private void incrementAmount() throws Exception{
         System.out.println("Ingrese el monto que desea aumentar");
-        double amount = Utils.getReader().nextDouble();
+        double amount = partnerValidator.validAmount(Utils.getReader().nextLine());   
         PartnerDto partnerDto = new PartnerDto();
         partnerDto.setAmount(amount);
+        this.service.incrementAmount(partnerDto);
     }
     private void vipPromotion() throws Exception{
         System.out.println("Ascender socio regular a VIP");    
