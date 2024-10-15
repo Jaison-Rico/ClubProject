@@ -1,36 +1,49 @@
 package app.controller;
 
+import app.controller.validator.InvoiceValidator;
 import app.controller.validator.PartnerValidator;
 import app.controller.validator.PersonValidator;
 import app.controller.validator.UserValidator;
 import app.dto.GuestDto;
+import app.dto.InvoiceDetailDto;
+import app.dto.InvoiceDto;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
-import app.service.Service;
+import app.service.ClubService;
 import app.service.interfaces.PartnerService;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
+@NoArgsConstructor
+@Setter
+@Getter
+@Controller
 public class PartnerController implements ControllerInterface  {
+    @Autowired
     private PersonValidator personValidator;
+    @Autowired
     private UserValidator userValidator;
+    @Autowired
     private PartnerValidator partnerValidator;
+    @Autowired
+    private InvoiceValidator invoiceValidator;
+    @Autowired
     private PartnerService service;
     
     private static final String MENU = "ingrese la opcion que desea realizar "
         + "\n 1. Crear invitado"
-        + "\n 2. incremento de fondo"
-        + "\n 3. solicitud a VIP"
-        + "\n 4. habilitar invitado"
-        + "\n 5. deshabilitar invitado"
-        + "\n 6. cerrar sesion";
+        + "\n 2. habilitar invitado"
+        + "\n 3. deshabilitar invitado"
+        + "\n 4. incremento de fondo"
+        + "\n 5. hacer consumo"
+        + "\n 6. solicitud a VIP"
+        + "\n 7. cerrar sesion";
 
-    public PartnerController() {
-        super();
-        this.personValidator = new PersonValidator();
-        this.userValidator = new UserValidator();
-        this.partnerValidator = new PartnerValidator();
-        this.service = new Service();
-    }
+   
 
     public void session() throws Exception {
         boolean session = true;
@@ -57,22 +70,26 @@ public class PartnerController implements ControllerInterface  {
 		return true;
             }
             case "2": {
-                this.incrementAmount();
+                this.enableGuest();
 		return true;
             }
             case "3":{
-                this.vipPromotion();
+               this.disableGuest();
                 return true;
             }
             case "4": {
-                System.out.println("activar invitado");
+                this.incrementAmount();
                 return true;
             }
             case "5": {
-                disableGuest();
+                createInvoice();
                 return true;
-            }         
+            }
             case "6":{
+                this.vipPromotion();
+                return true;
+            }
+            case "7":{
                 System.out.println("se cierra sesion");
                 return false;
             }
@@ -114,27 +131,58 @@ public class PartnerController implements ControllerInterface  {
         this.service.createGuest(guestDto);
         System.out.println("se ha creado el usuario exitosamente");
     }
-    
+    private void createInvoice() throws Exception {
+        System.out.println("ingrese el item de la factura");  
+        int item = invoiceValidator.validItem(Utils.getReader().nextLine());
+        System.out.println("ingrese la descripcion de la factura");  
+        String description = Utils.getReader().nextLine();
+        invoiceValidator.validDescription(description);
+        System.out.println("ingrese el valor de la factura");  
+        double amount = invoiceValidator.validAmount(Utils.getReader().nextLine());
+        
+        PersonDto personDto = new PersonDto();
+        PartnerDto partnerDto = new PartnerDto();
+        //
+        InvoiceDto invoiceDto = new InvoiceDto();
+        invoiceDto.setPersonId(personDto);
+        invoiceDto.setPartnerId(partnerDto);
+        invoiceDto.setStatus(false);
+        invoiceDto.setAmount(amount);
+        invoiceDto.setCreationDate(Utils.getDate()); 
+        InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
+        invoiceDetailDto.setInvoiceId(invoiceDto);
+        invoiceDetailDto.setItem(item);
+        invoiceDetailDto.setDescription(description);
+        invoiceDetailDto.setAmount(amount);
+        this.service.createInvoiceDetail(invoiceDetailDto);
+        System.out.println("se ha creado la factura exitosamente");
+        
+    }
     private void incrementAmount() throws Exception{
         System.out.println("Ingrese el monto que desea aumentar");
-        double amount = Utils.getReader().nextDouble();
+        double amount = partnerValidator.validAmount(Utils.getReader().nextLine());   
         PartnerDto partnerDto = new PartnerDto();
         partnerDto.setAmount(amount);
+        this.service.incrementAmount(partnerDto);
     }
-    
     private void vipPromotion() throws Exception{
         System.out.println("Ascender socio regular a VIP");    
         PartnerDto partnerDto = new PartnerDto();
         partnerDto.setType(true);
     }
-    
     private void disableGuest()throws Exception{
         System.out.println("desactivar invitado");
         System.out.println("numero de cedula del invitado");
         long document = personValidator.validDocument(Utils.getReader().nextLine());
         this.service.disableGuest(document);
+        System.out.println("usuario desactivado");
     }
-    private void activateGuest()throws Exception{
-        System.out.println("desactivar invitado"); 
+    private void enableGuest()throws Exception{
+        System.out.println("activar invitado");
+        System.out.println("numero de cedula del invitado");
+        long document = personValidator.validDocument(Utils.getReader().nextLine());
+        this.service.enableGuest(document);
+        System.out.println("usuario activado");
     }
+    
 }

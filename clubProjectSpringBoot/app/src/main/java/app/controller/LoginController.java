@@ -3,26 +3,33 @@ package app.controller;
 
 import app.controller.validator.UserValidator;
 import app.dto.UserDto;
-import app.service.Service;
+import app.service.ClubService;
 import app.service.interfaces.LoginService;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
+
+@Setter
+@Getter
+@Controller
 public class LoginController implements ControllerInterface{
+    @Autowired
     private UserValidator userValidator;
+    @Autowired
     private LoginService service;
     
-    private static final String MENU = "ingrese la opcion que desea:"
-        + "\n1.inicar sesion"
-        + "\n2. detener la ejecucion";
+    private static final String MENU = """
+                                       ingrese la opcion que desea:
+                                       1.inicar sesion
+                                       2. detener la ejecucion""";
     
     private Map<String, ControllerInterface> roles;    
-    public LoginController(){
-        this.userValidator = new UserValidator();
-        this.service = new Service();
-        ControllerInterface adminController = new AdminController();
-        ControllerInterface guestController = new GuestController();
-        ControllerInterface partnerController = new PartnerController();
+    public LoginController(AdminController adminController, GuestController guestController, PartnerController partnerController){
         this.roles = new HashMap<String, ControllerInterface>();
         roles.put("admin",adminController);
         roles.put("guest",guestController);
@@ -30,6 +37,7 @@ public class LoginController implements ControllerInterface{
     }
     
     
+    @Override
    public void session() throws Exception {
 	boolean session = true;
 	while (session) {
@@ -50,16 +58,16 @@ public class LoginController implements ControllerInterface{
 
     private boolean options(String option) throws Exception {
         switch (option) {
-            case "1": {
+            case "1" -> {
 		this.login();
 		return true;
                 }
-            case "2": {
+            case "2" -> {
                 System.out.println("Se detiene el programa");
 		return false;
 		
 		}
-            default: {
+            default -> {
 		System.out.println("ingrese un valor valido");
 		return true;
 		}

@@ -1,9 +1,29 @@
 package app.controller;
 
-import app.controller.validator.PersonValidator;
+import app.controller.validator.InvoiceValidator;
 
+import app.dto.InvoiceDetailDto;
+import app.dto.InvoiceDto;
+import app.dto.PartnerDto;
+import app.dto.PersonDto;
+import app.dto.UserDto;
+import app.service.interfaces.GuestService;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+@NoArgsConstructor
+@Setter
+@Getter
+@Controller
 public class GuestController implements ControllerInterface{
     
+    @Autowired
+    private InvoiceValidator invoiceValidator;
+    @Autowired
+    private GuestService service;
     @Override
     public void session() throws Exception {
         boolean session = true;
@@ -14,7 +34,8 @@ public class GuestController implements ControllerInterface{
     
     private static final String MENU = "ingrese la opcion que desea realizar "
         + "\n 1. Crear Factura"
-        + "\n 2. cerrar sesion";
+        + "\n 2. Conventirse en socio"
+        + "\n 3. cerrar sesion";
     
     
     private boolean menu() {
@@ -31,10 +52,14 @@ public class GuestController implements ControllerInterface{
     private boolean options(String option) throws Exception {
 	switch (option) {
             case "1": {
-		this.CreateInvoice();
+		this.createInvoice();
 		return true;
             }
             case "2":{
+                convertPartner();
+                return false;
+            }
+            case "3":{
                 System.out.println("se cierra sesion");
                 return false;
             }
@@ -46,8 +71,47 @@ public class GuestController implements ControllerInterface{
     }
 
     
-    private void CreateInvoice() throws Exception {
-        System.out.println("crear factura");
+    private void createInvoice() throws Exception { 
+        System.out.println("ingrese el item de la factura");  
+        int item = invoiceValidator.validItem(Utils.getReader().nextLine());
+        System.out.println("ingrese la descripcion de la factura");  
+        String description = Utils.getReader().nextLine();
+        invoiceValidator.validDescription(description);
+        System.out.println("ingrese el valor de la factura");  
+        double amount = invoiceValidator.validAmount(Utils.getReader().nextLine());
+        
+        PersonDto personDto = new PersonDto();
+        PartnerDto partnerDto = new PartnerDto();
+        //
+        InvoiceDto invoiceDto = new InvoiceDto();
+        invoiceDto.setPersonId(personDto);
+        invoiceDto.setPartnerId(partnerDto);
+        invoiceDto.setStatus(false);
+        invoiceDto.setAmount(amount);
+        invoiceDto.setCreationDate(Utils.getDate()); 
+        InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
+        invoiceDetailDto.setInvoiceId(invoiceDto);
+        invoiceDetailDto.setItem(item);
+        invoiceDetailDto.setDescription(description);
+        invoiceDetailDto.setAmount(amount);
+        this.service.createInvoiceDetail(invoiceDetailDto);
+        System.out.println("se ha creado la factura exitosamente");
+        
+    }
+    
+    private void convertPartner() throws Exception {
+        PartnerDto parnetDto = new PartnerDto();
+        UserDto userDto = new UserDto();
+        System.out.println("ingrese el fondo inial");
+        double amount = invoiceValidator.validAmount(Utils.getReader().nextLine());
+        parnetDto.setUserId(userDto);
+        parnetDto.setAmount(amount);
+        parnetDto.setType(true);
+        parnetDto.setCreationDate(Utils.getDate());
+        System.out.println("acabas de convertirse en socio");
+        this.service.convertPartner(parnetDto);
+        
+        
     }
          
 }

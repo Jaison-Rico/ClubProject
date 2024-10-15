@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package app.dao.repository;
 
-/**
- *
- * @author owenu
- */
-public interface GuestRepository {
-    
+import app.model.Guest;
+import app.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface GuestRepository extends JpaRepository<Guest,Long>{
+
+    public Guest findByUserId(User user);
 }

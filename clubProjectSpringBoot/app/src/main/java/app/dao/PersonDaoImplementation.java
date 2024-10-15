@@ -3,11 +3,24 @@ package app.dao;
 import app.dao.repository.PersonRepository;
 import app.dao.interfaces.PersonDao;
 import app.dto.PersonDto;
+import app.dto.UserDto;
 import app.helpers.Helper;
 import app.model.Person;
+import app.model.User;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Service
 public class PersonDaoImplementation implements PersonDao {
+    @Autowired
     public PersonRepository personRepository;
     @Override
     public boolean existsByDocument(PersonDto personDto) throws Exception {
@@ -18,6 +31,8 @@ public class PersonDaoImplementation implements PersonDao {
     public void createPerson(PersonDto personDto) throws Exception {
         Person person = Helper.parse(personDto);
 	personRepository.save(person);
+        personDto.setId(person.getId());
+        
     }
 
     @Override
@@ -31,5 +46,7 @@ public class PersonDaoImplementation implements PersonDao {
        Person person = personRepository.findByDocument(personDto.getDocument());
        return Helper.parse(person);
     }
+
+
 
 }

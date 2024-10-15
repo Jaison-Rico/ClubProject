@@ -10,4 +10,6 @@ public interface UserDao {
     public boolean existsByUserName(UserDto userDto) throws Exception;
     public void createUser(UserDto userDto) throws Exception;
     public void deleteUser(UserDto userDto) throws Exception;
+    public UserDto findByPersonId (PersonDto personDto) throws Exception;
+    public void convertPartner(UserDto userDto) throws Exception;
 }
