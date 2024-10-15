@@ -162,6 +162,12 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
         PartnerDto partner = new PartnerDto();
         partner = this.partnerDao.findByUserId(user);
         partner.setAmount(partner.getAmount() + partnerDto.getAmount());
+        if(partner.getAmount() > 1000000 && partner.isType()){
+            throw  new Exception("El tope maximo para socios regulares es de 1 Millon");
+        }else if(partner.getAmount() > 5000000 && !partner.isType()) {
+            throw  new Exception("El tope maximo para socios vips es de 5 Millon");
+        }
+        
         this.partnerDao.incrementAmount(partner);
         System.out.println("valor actual del fondo del socio: " + partner.getAmount());
     }

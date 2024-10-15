@@ -28,7 +28,7 @@ public class User {
     private String password;
     @Column(name = "role")
     private String role;
-    @JoinColumn(name = "personid")
+    @JoinColumn(name = "personnid")
     @OneToOne
     private Person personId;   
 }
