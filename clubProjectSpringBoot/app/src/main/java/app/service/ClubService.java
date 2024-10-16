@@ -105,9 +105,13 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
     
     @Override
     public void createInvoice(InvoiceDto InvoiceDto) throws Exception {
-        GuestDto guestDto = new GuestDto();
-        guestDto = this.guestDao.findByUserId(user);
-        InvoiceDto.setPartnerId(guestDto.getPartnerId());  
+        if(user.getRole().equals("partner")){
+            PartnerDto partnerDto = this.partnerDao.findByUserId(user);
+            InvoiceDto.setPartnerId(partnerDto);
+        }else{
+            GuestDto guestDto = this.guestDao.findByUserId(user);
+            InvoiceDto.setPartnerId(guestDto.getPartnerId()); 
+        }
         InvoiceDto.setPersonId(user.getPersonId());
         this.invoiceDao.createInvoice(InvoiceDto);
     }
