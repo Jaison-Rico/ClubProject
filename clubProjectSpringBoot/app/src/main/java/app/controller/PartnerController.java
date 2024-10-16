@@ -127,7 +127,7 @@ public class PartnerController implements ControllerInterface  {
         GuestDto guestDto = new GuestDto();
         guestDto.setUserId(userDto);
         guestDto.setPartnerId(partnerDto);
-        guestDto.setStatus(true);
+        guestDto.setStatus("inactiva");
         this.service.createGuest(guestDto);
         System.out.println("se ha creado el usuario exitosamente");
     }
@@ -146,7 +146,7 @@ public class PartnerController implements ControllerInterface  {
         InvoiceDto invoiceDto = new InvoiceDto();
         invoiceDto.setPersonId(personDto);
         invoiceDto.setPartnerId(partnerDto);
-        invoiceDto.setStatus(false);
+        invoiceDto.setStatus("Sin pagar");
         invoiceDto.setAmount(amount);
         invoiceDto.setCreationDate(Utils.getDate()); 
         InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
@@ -168,7 +168,7 @@ public class PartnerController implements ControllerInterface  {
     private void vipPromotion() throws Exception{
         System.out.println("Ascender socio regular a VIP");    
         PartnerDto partnerDto = new PartnerDto();
-        partnerDto.setType(true);
+        partnerDto.setType("vip");
     }
     private void disableGuest()throws Exception{
         System.out.println("desactivar invitado");

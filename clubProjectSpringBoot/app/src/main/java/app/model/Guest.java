@@ -29,5 +29,5 @@ public class Guest {
     @OneToOne
     private Partner partnerId;
     @Column(name = "status")
-    private boolean status;
+    private String status;
 }

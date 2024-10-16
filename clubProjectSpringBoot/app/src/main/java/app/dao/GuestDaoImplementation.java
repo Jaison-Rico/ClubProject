@@ -30,14 +30,14 @@ public class GuestDaoImplementation implements GuestDao{
     @Override
     public void disableGuest(GuestDto guestDto) throws Exception{
         Guest guest = Helper.parse(guestDto);
-        guest.setStatus(false);
+        guest.setStatus("inactiva");
         guestRepository.save(guest);
     }
         
     @Override
     public void enableGuest(GuestDto guestDto) throws Exception{
         Guest guest = Helper.parse(guestDto);
-        guest.setStatus(true);
+        guest.setStatus("activa");
         guestRepository.save(guest);
     }
 

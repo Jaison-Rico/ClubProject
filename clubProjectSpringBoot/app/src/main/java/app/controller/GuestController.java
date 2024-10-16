@@ -86,7 +86,7 @@ public class GuestController implements ControllerInterface{
         InvoiceDto invoiceDto = new InvoiceDto();
         invoiceDto.setPersonId(personDto);
         invoiceDto.setPartnerId(partnerDto);
-        invoiceDto.setStatus(false);
+        invoiceDto.setStatus("Sin pagar");
         invoiceDto.setAmount(amount);
         invoiceDto.setCreationDate(Utils.getDate()); 
         InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
@@ -106,7 +106,7 @@ public class GuestController implements ControllerInterface{
         double amount = invoiceValidator.validAmount(Utils.getReader().nextLine());
         parnetDto.setUserId(userDto);
         parnetDto.setAmount(amount);
-        parnetDto.setType(true);
+        parnetDto.setType("regular");
         parnetDto.setCreationDate(Utils.getDate());
         System.out.println("acabas de convertirse en socio");
         this.service.convertPartner(parnetDto);

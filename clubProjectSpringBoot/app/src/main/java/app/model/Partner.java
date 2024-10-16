@@ -29,7 +29,7 @@ public class Partner {
     @Column(name = "amount")
     private double amount;
     @Column(name = "type")
-    private boolean type;
+    private String type;
     @Column(name = "creationdate")
     private Date creationDate;
 }
