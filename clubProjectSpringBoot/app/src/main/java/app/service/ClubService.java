@@ -176,4 +176,11 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
         System.out.println("valor actual del fondo del socio: " + partner.getAmount());
     }
 
+    @Override
+    public void vipPromotion(PartnerDto partnerDto) throws Exception {
+        partnerDto = this.partnerDao.findByUserId(user);
+        this.partnerDao.vipPromotion(partnerDto);
+        System.out.println("status actual del partner "+ partnerDto.isType());
+    }
+
 }

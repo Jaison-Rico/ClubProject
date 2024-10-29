@@ -14,4 +14,5 @@ public interface PartnerService {
     public void incrementAmount(PartnerDto partnerDto) throws Exception;
     public void createInvoiceDetail(InvoiceDetailDto invoiceDetailDto) throws Exception;
     public void createInvoice(InvoiceDto invoiceDto) throws Exception;
+    public void vipPromotion(PartnerDto partnerDto) throws Exception;
 }

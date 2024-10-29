@@ -168,7 +168,9 @@ public class PartnerController implements ControllerInterface  {
     private void vipPromotion() throws Exception{
         System.out.println("Ascender socio regular a VIP");    
         PartnerDto partnerDto = new PartnerDto();
-        partnerDto.setType("vip");
+        partnerDto.setType("pendiente");
+        this.service.vipPromotion(partnerDto);
+        System.out.println("solicitud enviada");
     }
     private void disableGuest()throws Exception{
         System.out.println("desactivar invitado");
