@@ -47,7 +47,7 @@ public class PartnerDaoImplementation implements PartnerDao{
     }
 
     @Override
-    public void vipPromotion(PartnerDto partnerDto) throws Exception {
+    public void PartnerVipPromotion(PartnerDto partnerDto) throws Exception {
         Partner partner = Helper.parse(partnerDto);
         partnerRepository.save(partner);
     }

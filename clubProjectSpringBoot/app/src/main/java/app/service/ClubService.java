@@ -177,10 +177,11 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
     }
 
     @Override
-    public void vipPromotion(PartnerDto partnerDto) throws Exception {
-        partnerDto = this.partnerDao.findByUserId(user);
-        this.partnerDao.vipPromotion(partnerDto);
-        System.out.println("status actual del partner "+ partnerDto.isType());
+    public void PartnerVipPromotion(PartnerDto partnerDto) throws Exception {
+        PartnerDto partner = this.partnerDao.findByUserId(user);
+        partner.setType(partnerDto.isType());
+        this.partnerDao.PartnerVipPromotion(partner);
+        System.out.println("status actual del partner "+ partner.isType());
     }
 
 }
