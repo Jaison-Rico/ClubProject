@@ -10,7 +10,6 @@ import app.dto.InvoiceDto;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
-import app.service.ClubService;
 import app.service.interfaces.PartnerService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -86,7 +85,7 @@ public class PartnerController implements ControllerInterface  {
                 return true;
             }
             case "6":{
-                this.vipPromotion();
+                this.PartnerVipPromotion();
                 return true;
             }
             case "7":{
@@ -127,7 +126,7 @@ public class PartnerController implements ControllerInterface  {
         GuestDto guestDto = new GuestDto();
         guestDto.setUserId(userDto);
         guestDto.setPartnerId(partnerDto);
-        guestDto.setStatus(true);
+        guestDto.setStatus("inactiva");
         this.service.createGuest(guestDto);
         System.out.println("se ha creado el usuario exitosamente");
     }
@@ -146,7 +145,7 @@ public class PartnerController implements ControllerInterface  {
         InvoiceDto invoiceDto = new InvoiceDto();
         invoiceDto.setPersonId(personDto);
         invoiceDto.setPartnerId(partnerDto);
-        invoiceDto.setStatus(false);
+        invoiceDto.setStatus("Sin pagar");
         invoiceDto.setAmount(amount);
         invoiceDto.setCreationDate(Utils.getDate()); 
         InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
@@ -165,10 +164,12 @@ public class PartnerController implements ControllerInterface  {
         partnerDto.setAmount(amount);
         this.service.incrementAmount(partnerDto);
     }
-    private void vipPromotion() throws Exception{
+    private void PartnerVipPromotion() throws Exception{
         System.out.println("Ascender socio regular a VIP");    
         PartnerDto partnerDto = new PartnerDto();
-        partnerDto.setType(true);
+        partnerDto.setType("pendiente");
+        this.service.PartnerVipPromotion(partnerDto);
+        System.out.println("solicitud enviada");
     }
     private void disableGuest()throws Exception{
         System.out.println("desactivar invitado");

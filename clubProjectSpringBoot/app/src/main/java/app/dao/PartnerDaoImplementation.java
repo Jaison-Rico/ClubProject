@@ -45,4 +45,10 @@ public class PartnerDaoImplementation implements PartnerDao{
         Partner partner = Helper.parse(partnerDto);
         partnerRepository.save(partner);
     }
+
+    @Override
+    public void PartnerVipPromotion(PartnerDto partnerDto) throws Exception {
+        Partner partner = Helper.parse(partnerDto);
+        partnerRepository.save(partner);
+    }
 }

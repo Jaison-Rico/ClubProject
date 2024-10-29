@@ -105,9 +105,13 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
     
     @Override
     public void createInvoice(InvoiceDto InvoiceDto) throws Exception {
-        GuestDto guestDto = new GuestDto();
-        guestDto = this.guestDao.findByUserId(user);
-        InvoiceDto.setPartnerId(guestDto.getPartnerId());  
+        if(user.getRole().equals("partner")){
+            PartnerDto partnerDto = this.partnerDao.findByUserId(user);
+            InvoiceDto.setPartnerId(partnerDto);
+        }else{
+            GuestDto guestDto = this.guestDao.findByUserId(user);
+            InvoiceDto.setPartnerId(guestDto.getPartnerId()); 
+        }
         InvoiceDto.setPersonId(user.getPersonId());
         this.invoiceDao.createInvoice(InvoiceDto);
     }
@@ -162,14 +166,22 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
         PartnerDto partner = new PartnerDto();
         partner = this.partnerDao.findByUserId(user);
         partner.setAmount(partner.getAmount() + partnerDto.getAmount());
-        if(partner.getAmount() > 1000000 && partner.isType()){
+        if(partner.getAmount() > 1000000 && partner.isType().equals("regular")){
             throw  new Exception("El tope maximo para socios regulares es de 1 Millon");
-        }else if(partner.getAmount() > 5000000 && !partner.isType()) {
+        }else if(partner.getAmount() > 5000000 && partner.isType().equals("vip")) {
             throw  new Exception("El tope maximo para socios vips es de 5 Millon");
         }
         
         this.partnerDao.incrementAmount(partner);
         System.out.println("valor actual del fondo del socio: " + partner.getAmount());
+    }
+
+    @Override
+    public void PartnerVipPromotion(PartnerDto partnerDto) throws Exception {
+        PartnerDto partner = this.partnerDao.findByUserId(user);
+        partner.setType(partnerDto.isType());
+        this.partnerDao.PartnerVipPromotion(partner);
+        System.out.println("status actual del partner "+ partner.isType());
     }
 
 }

@@ -5,7 +5,7 @@ public class PartnerDto {
     private long id;
     private UserDto userId;
     private double amount;
-    private boolean type;
+    private String type;
     private Date creationDate;
 
     public PartnerDto() {}
@@ -34,11 +34,11 @@ public class PartnerDto {
         this.amount = amount;
     }
 
-    public boolean isType() {
+    public String isType() {
         return type;
     }
 
-    public void setType(boolean type) {
+    public void setType(String type) {
         this.type = type;
     }
 

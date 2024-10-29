@@ -60,9 +60,8 @@ public abstract interface Helper {
         PartnerDto partnerDto = new PartnerDto();
         partnerDto.setId(partner.getId());
         partnerDto.setUserId(parse(partner.getUserId()));
-
         partnerDto.setAmount(partner.getAmount());
-        partnerDto.setType(partner.isType());
+        partnerDto.setType(partner.getType());
         partnerDto.setCreationDate(partner.getCreationDate());
         return partnerDto;
     }
@@ -83,7 +82,7 @@ public abstract interface Helper {
         GuestDto guestDto = new GuestDto();
         guestDto.setId(guest.getId());
         guestDto.setPartnerId(parse(guest.getPartnerId()));
-        guestDto.setStatus(guest.isStatus());
+        guestDto.setStatus(guest.getStatus());
         guestDto.setUserId(parse(guest.getUserId()));
         return guestDto;
     }
@@ -108,7 +107,7 @@ public abstract interface Helper {
         invoiceDto.setPartnerId(parse(invoice.getPartnerId()));
         invoiceDto.setCreationDate(invoice.getCreationDate());
         invoiceDto.setAmount(invoice.getAmount());
-        invoiceDto.setStatus(invoice.isStatus());
+        invoiceDto.setStatus(invoice.getStatus());
         return invoiceDto;
     }
     

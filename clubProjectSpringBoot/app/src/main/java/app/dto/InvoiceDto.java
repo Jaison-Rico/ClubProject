@@ -8,7 +8,7 @@ public class InvoiceDto {
     private PartnerDto partnerId;
     private Date creationDate;
     private double amount;
-    private boolean status;
+    private String status;
 
     public InvoiceDto() {}
 
@@ -52,11 +52,11 @@ public class InvoiceDto {
         this.amount = amount;
     }
 
-    public boolean isStatus() {
+    public String isStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
     

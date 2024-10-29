@@ -10,4 +10,5 @@ public interface PartnerRepository extends JpaRepository<Partner,Long> {
 
     public Partner findByUserId(User user);
     
+    
 }

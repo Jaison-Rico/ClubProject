@@ -107,7 +107,7 @@ public  class AdminController implements ControllerInterface{
 	userDto.setRole("partner");          
         PartnerDto partnerDto = new PartnerDto();
         partnerDto.setUserId(userDto);
-        partnerDto.setType(true);
+        partnerDto.setType("regular");
         partnerDto.setAmount(amount);
         partnerDto.setCreationDate(Utils.getDate());   
         this.service.createPartner(partnerDto);
