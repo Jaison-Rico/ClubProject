@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import app.dao.interfaces.InvoiceDao;
 import app.dao.interfaces.InvoiceDetailDao;
 import app.service.interfaces.GuestService;
+import java.util.List;
 
 
 @Getter
@@ -182,6 +183,97 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
         partner.setType(partnerDto.isType());
         this.partnerDao.PartnerVipPromotion(partner);
         System.out.println("status actual del partner "+ partner.isType());
+    }
+
+    @Override
+    public void invoiceHistory() throws Exception {
+        List<InvoiceDetailDto> listInvoicesDetailDto = this.invoideDetailDao.listClubInvoices();
+        for(InvoiceDetailDto invoiceDetailDto : listInvoicesDetailDto){
+            System.out.println("######################");
+            System.out.println("ENCABEZADO DE LA FACTURA"
+                + "\nID: " + invoiceDetailDto.getInvoiceId().getId()
+                + "\nDOCUMENTO: " + invoiceDetailDto.getInvoiceId().getPersonId().getDocument()
+                + "\nSOCIO: " + invoiceDetailDto.getInvoiceId().getPartnerId().getUserId().getUserName()
+                + "\nFEHCA: " + invoiceDetailDto.getInvoiceId().getCreationDate()
+                + "\nVALOR TOTAL: " + invoiceDetailDto.getInvoiceId().getAmount()
+                + "\nESTADO: " + invoiceDetailDto.getInvoiceId().isStatus()
+                + "\nDETALLES DE LA FACTURA"
+                + "\nID: " + invoiceDetailDto.getId()
+                + "\nENCABEZADO ID: " + invoiceDetailDto.getInvoiceId().getId()
+                + "\nNUMERO DEL ITEM: " + invoiceDetailDto.getItem()
+                + "\nDESCRIPCION: " + invoiceDetailDto.getDescription()
+                + "\nVALOR DEL ITEM: " + invoiceDetailDto.getAmount());
+        }
+        
+    }
+
+    @Override
+    public void invoiceHistoryPartner(long document) throws Exception {
+        PersonDto personDto = new PersonDto();
+        personDto.setDocument(document);
+        if(this.personDao.existsByDocument(personDto) == false) {
+            throw new Exception("no existe una persona con ese documento");
+	}
+        personDto = this.personDao.findByDocument(personDto);
+        UserDto userDto = new UserDto();
+        userDto = this.userDao.findByPersonId(personDto);
+        if(!"partner".equals(userDto.getRole())){
+            throw new Exception("Esta persona no es un socio");
+        }
+        List<InvoiceDetailDto> listInvoicesDetailDto = this.invoideDetailDao.listClubInvoices();
+        for(InvoiceDetailDto invoiceDetailDto : listInvoicesDetailDto){
+            if(invoiceDetailDto.getInvoiceId().getPersonId().getDocument() == document){
+                System.out.println("######################");
+                System.out.println("ENCABEZADO DE LA FACTURA"
+                    + "\nID: " + invoiceDetailDto.getInvoiceId().getId()
+                    + "\nDOCUMENTO: " + invoiceDetailDto.getInvoiceId().getPersonId().getDocument()
+                    + "\nSOCIO: " + invoiceDetailDto.getInvoiceId().getPartnerId().getUserId().getUserName()
+                    + "\nFEHCA: " + invoiceDetailDto.getInvoiceId().getCreationDate()
+                    + "\nVALOR TOTAL: " + invoiceDetailDto.getInvoiceId().getAmount()
+                    + "\nESTADO: " + invoiceDetailDto.getInvoiceId().isStatus()
+                    + "\nDETALLES DE LA FACTURA"
+                    + "\nID: " + invoiceDetailDto.getId()
+                    + "\nENCABEZADO ID: " + invoiceDetailDto.getInvoiceId().getId()
+                    + "\nNUMERO DEL ITEM: " + invoiceDetailDto.getItem()
+                    + "\nDESCRIPCION: " + invoiceDetailDto.getDescription()
+                    + "\nVALOR DEL ITEM: " + invoiceDetailDto.getAmount());
+            }    
+        }
+            
+    }
+
+    @Override
+    public void invoiceHistoryGuest(long document) throws Exception {
+      PersonDto personDto = new PersonDto();
+        personDto.setDocument(document);
+        if(this.personDao.existsByDocument(personDto) == false) {
+            throw new Exception("no existe una persona con ese documento");
+	}
+        personDto = this.personDao.findByDocument(personDto);
+        UserDto userDto = new UserDto();
+        userDto = this.userDao.findByPersonId(personDto);
+        if(!"guest".equals(userDto.getRole())){
+            throw new Exception("Esta persona no es un invitado");
+        }
+        List<InvoiceDetailDto> listInvoicesDetailDto = this.invoideDetailDao.listClubInvoices();
+        for(InvoiceDetailDto invoiceDetailDto : listInvoicesDetailDto){
+            if(invoiceDetailDto.getInvoiceId().getPersonId().getDocument() == document){
+                System.out.println("######################");
+                System.out.println("ENCABEZADO DE LA FACTURA"
+                    + "\nID: " + invoiceDetailDto.getInvoiceId().getId()
+                    + "\nDOCUMENTO: " + invoiceDetailDto.getInvoiceId().getPersonId().getDocument()
+                    + "\nSOCIO: " + invoiceDetailDto.getInvoiceId().getPartnerId().getUserId().getUserName()
+                    + "\nFEHCA: " + invoiceDetailDto.getInvoiceId().getCreationDate()
+                    + "\nVALOR TOTAL: " + invoiceDetailDto.getInvoiceId().getAmount()
+                    + "\nESTADO: " + invoiceDetailDto.getInvoiceId().isStatus()
+                    + "\nDETALLES DE LA FACTURA"
+                    + "\nID: " + invoiceDetailDto.getId()
+                    + "\nENCABEZADO ID: " + invoiceDetailDto.getInvoiceId().getId()
+                    + "\nNUMERO DEL ITEM: " + invoiceDetailDto.getItem()
+                    + "\nDESCRIPCION: " + invoiceDetailDto.getDescription()
+                    + "\nVALOR DEL ITEM: " + invoiceDetailDto.getAmount());
+            }    
+        }  
     }
 
 }

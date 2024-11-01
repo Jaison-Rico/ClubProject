@@ -30,9 +30,11 @@ public  class AdminController implements ControllerInterface{
     private AdminService service;
     private static final String MENU = "ingrese la opcion que desea realizar "
         + "\n 1. para crear Socio "
-        + "\n 2. Historial de facturas"
+        + "\n 2. Historial de facturas club"
         + "\n 3. promocion a VIP"
-        + "\n 4. cerrar sesion";
+        + "\n 4. Historial facturas socios" 
+        + "\n 5. Historial facturas invitado"
+        + "\n 6. cerrar sesion";
 
 
     
@@ -61,14 +63,22 @@ public  class AdminController implements ControllerInterface{
 		return true;
                 }
             case "2": {
-                System.out.println("comming soon");
+                this.invoiceHistory();
 		return true;
 		}
             case "3":{
                 System.out.println("comming soon");
                 return true;
                 }
-            case "4": {
+            case "4":{
+                this.invoiceHistoryPartner();
+                return true;
+                }
+            case "5":{
+                this.invoiceHistoryGuest();
+                return true;
+                }
+            case "6": {
                 System.out.println("se cierra sesion");
 		return false;
 		}
@@ -112,5 +122,19 @@ public  class AdminController implements ControllerInterface{
         partnerDto.setCreationDate(Utils.getDate());   
         this.service.createPartner(partnerDto);
 	System.out.println("se ha creado el usuario exitosamente");
-    }  
+    }
+    private void invoiceHistory() throws Exception{
+        System.out.println("Historial de facturas");
+        this.service.invoiceHistory();
+    }
+    private void invoiceHistoryPartner() throws Exception{
+        System.out.println("historial de facturas del socio: ");
+        long document = personValidator.validDocument(Utils.getReader().nextLine());
+        this.service.invoiceHistoryPartner(document);
+    }
+    private void invoiceHistoryGuest() throws Exception{
+        System.out.println("Documento del invitado: ");
+        long document = personValidator.validDocument(Utils.getReader().nextLine());
+        this.service.invoiceHistoryGuest(document);
+    }
 }
