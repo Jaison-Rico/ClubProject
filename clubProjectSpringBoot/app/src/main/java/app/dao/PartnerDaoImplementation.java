@@ -6,6 +6,8 @@ import app.dao.interfaces.PartnerDao;
 import app.dao.repository.PartnerRepository;
 import app.dto.UserDto;
 import app.model.User;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -50,5 +52,17 @@ public class PartnerDaoImplementation implements PartnerDao{
     public void PartnerVipPromotion(PartnerDto partnerDto) throws Exception {
         Partner partner = Helper.parse(partnerDto);
         partnerRepository.save(partner);
+    }
+
+    @Override
+    public List<PartnerDto> findByType(String type) throws Exception {
+        List<Partner> listPartners = new ArrayList<>();
+        List<PartnerDto> listPartnersDto = new ArrayList<>();
+        listPartners = partnerRepository.findByType(type);
+        for(Partner partner : listPartners){
+            listPartnersDto.add(Helper.parse(partner));
+        }
+        
+        return listPartnersDto;
     }
 }

@@ -130,9 +130,7 @@ public abstract interface Helper {
     public static InvoiceDetailDto parse(InvoiceDetail invoiceDetail ){
         InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
         invoiceDetailDto.setId(invoiceDetail.getId());
-        if(invoiceDetailDto.getInvoiceId() != null){    
-            invoiceDetailDto.setInvoiceId(parse(invoiceDetail.getInvoiceId()));
-        }
+        invoiceDetailDto.setInvoiceId(parse(invoiceDetail.getInvoiceId()));
         invoiceDetailDto.setItem(invoiceDetail.getItem());
         invoiceDetailDto.setDescription(invoiceDetail.getDescription());
         invoiceDetailDto.setAmount(invoiceDetail.getAmount());
@@ -142,7 +140,9 @@ public abstract interface Helper {
     public static InvoiceDetail parse(InvoiceDetailDto invoiceDetailDto ){
         InvoiceDetail invoiceDetail = new InvoiceDetail();
         invoiceDetail.setId(invoiceDetailDto.getId());
-        invoiceDetail.setInvoiceId(parse(invoiceDetailDto.getInvoiceId()));
+        if(invoiceDetailDto.getInvoiceId() != null){           
+            invoiceDetail.setInvoiceId(parse(invoiceDetailDto.getInvoiceId()));
+        }
         invoiceDetail.setItem(invoiceDetailDto.getItem());
         invoiceDetail.setDescription(invoiceDetailDto.getDescription());
         invoiceDetail.setAmount(invoiceDetailDto.getAmount());
