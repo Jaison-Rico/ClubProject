@@ -118,8 +118,12 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
     }
 
     @Override
-    public void promotiontovip(PersonDto personDto) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); 
+    public void promotiontovip() throws Exception {
+        List<PartnerDto> listPartners = this.partnerDao.findByType("pendiente");
+        for(PartnerDto partnerDto : listPartners){
+            partnerDto.setType("vip");
+            this.partnerDao.PartnerVipPromotion(partnerDto);
+        }
     }
 
     @Override
@@ -178,11 +182,11 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
     }
 
     @Override
-    public void PartnerVipPromotion(PartnerDto partnerDto) throws Exception {
+    public void PartnerRequestVip(PartnerDto partnerDto) throws Exception {
         PartnerDto partner = this.partnerDao.findByUserId(user);
         partner.setType(partnerDto.isType());
         this.partnerDao.PartnerVipPromotion(partner);
-        System.out.println("status actual del partner "+ partner.isType());
+        System.out.println("status actual del partner: "+ partner.isType());
     }
 
     @Override

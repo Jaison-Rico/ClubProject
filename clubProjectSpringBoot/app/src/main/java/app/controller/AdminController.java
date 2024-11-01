@@ -67,7 +67,7 @@ public  class AdminController implements ControllerInterface{
 		return true;
 		}
             case "3":{
-                System.out.println("comming soon");
+                this.promotiontovip();
                 return true;
                 }
             case "4":{
@@ -136,5 +136,9 @@ public  class AdminController implements ControllerInterface{
         System.out.println("Documento del invitado: ");
         long document = personValidator.validDocument(Utils.getReader().nextLine());
         this.service.invoiceHistoryGuest(document);
+    }
+    private void promotiontovip() throws Exception{
+        this.service.promotiontovip();
+        System.out.println("Usuarios promovidos");
     }
 }

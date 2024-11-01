@@ -85,7 +85,7 @@ public class PartnerController implements ControllerInterface  {
                 return true;
             }
             case "6":{
-                this.PartnerVipPromotion();
+                this.PartnerRequestVip();
                 return true;
             }
             case "7":{
@@ -164,11 +164,11 @@ public class PartnerController implements ControllerInterface  {
         partnerDto.setAmount(amount);
         this.service.incrementAmount(partnerDto);
     }
-    private void PartnerVipPromotion() throws Exception{
+    private void PartnerRequestVip() throws Exception{
         System.out.println("Ascender socio regular a VIP");    
         PartnerDto partnerDto = new PartnerDto();
         partnerDto.setType("pendiente");
-        this.service.PartnerVipPromotion(partnerDto);
+        this.service.PartnerRequestVip(partnerDto);
         System.out.println("solicitud enviada");
     }
     private void disableGuest()throws Exception{
