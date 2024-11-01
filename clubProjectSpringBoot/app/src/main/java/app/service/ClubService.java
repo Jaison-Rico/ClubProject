@@ -119,6 +119,10 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
 
     @Override
     public void promotiontovip() throws Exception {
+        List<PartnerDto> listPartnersVip = this.partnerDao.findByType("vip");
+        if(listPartnersVip.size() == 5){
+            throw new Exception("No se pueden hacer mas promociones a VIP. El maximo de 5 VIPs ya esta ocupado.");
+        }
         List<PartnerDto> listPartners = this.partnerDao.findByType("pendiente");
         for(PartnerDto partnerDto : listPartners){
             partnerDto.setType("vip");
