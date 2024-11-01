@@ -1,24 +1,28 @@
 package app.controller;
 
+import app.controller.request.CreationUserRequest;
 import app.controller.validator.PartnerValidator;
 import app.controller.validator.PersonValidator;
 import app.controller.validator.UserValidator;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
-import app.service.ClubService;
 import app.service.interfaces.AdminService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Controller
+@RestController
 public  class AdminController implements ControllerInterface{
     @Autowired
     private PersonValidator personValidator;
@@ -36,92 +40,43 @@ public  class AdminController implements ControllerInterface{
         + "\n 5. Historial facturas invitado"
         + "\n 6. cerrar sesion";
 
-
-    
-    public void session() throws Exception {
-	boolean session = true;
-	while (session) {
-            session = menu();
-            }
-	}
-
-    private boolean menu() {
-        try {
-            System.out.println(MENU);
-            String option = Utils.getReader().nextLine();
-            return this.options(option);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return true;
-		}
-	}
-
-    private boolean options(String option) throws Exception {
-        switch (option) {
-            case "1": {
-		this.CreatePartner();
-		return true;
-                }
-            case "2": {
-                this.invoiceHistory();
-		return true;
-		}
-            case "3":{
-                this.promotiontovip();
-                return true;
-                }
-            case "4":{
-                this.invoiceHistoryPartner();
-                return true;
-                }
-            case "5":{
-                this.invoiceHistoryGuest();
-                return true;
-                }
-            case "6": {
-                System.out.println("se cierra sesion");
-		return false;
-		}
-            default: {
-		System.out.println("ingrese una opcion valido");
-		return true;
-		}
-            }
-	}
-    
-    private void CreatePartner() throws Exception{
-        System.out.println("ingrese el nombre del socio");
-        String name = Utils.getReader().nextLine();
-	personValidator.validName(name);
-	System.out.println("ingrese la cedula del socio");
-        long document = personValidator.validDocument(Utils.getReader().nextLine());
-	System.out.println("ingrese el numero de ceular del socio");
-	long cellPhone = personValidator.validCellphone(Utils.getReader().nextLine());
-	System.out.println("ingrese el nombre de usuario del socio");
-	String userName = Utils.getReader().nextLine();
-	userValidator.validUserName(userName);
-	System.out.println("ingrese la contraseña del socio");
-	String password = Utils.getReader().nextLine();
-	userValidator.validPassword(password);
-        System.out.println("ingrese el fondo inical del socio");  
-        double amount = partnerValidator.validAmount(Utils.getReader().nextLine());
+ 
+    @PostMapping("/partner")
+    private ResponseEntity CreatePartner(@RequestBody CreationUserRequest request) throws Exception{
         
-	PersonDto personDto = new PersonDto();
-	personDto.setName(name);
-	personDto.setDocument(document);
-	personDto.setCellphone(cellPhone);
-	UserDto userDto = new UserDto();
-	userDto.setPersonId(personDto);
-	userDto.setUserName(userName);
-	userDto.setPassword(password);
-	userDto.setRole("partner");          
-        PartnerDto partnerDto = new PartnerDto();
-        partnerDto.setUserId(userDto);
-        partnerDto.setType("regular");
-        partnerDto.setAmount(amount);
-        partnerDto.setCreationDate(Utils.getDate());   
-        this.service.createPartner(partnerDto);
-	System.out.println("se ha creado el usuario exitosamente");
+        try {
+            String name = request.getName();
+            personValidator.validName(name);
+            long document = personValidator.validDocument(request.getDocument());
+            long cellPhone = personValidator.validCellphone(request.getCellPhone());
+            String userName = request.getUserName();
+            userValidator.validUserName(userName);
+            String password = request.getPassword();
+            userValidator.validPassword(password);
+            double amount = partnerValidator.validAmount(request.getAmount());
+
+            PersonDto personDto = new PersonDto();
+            personDto.setName(name);
+            personDto.setDocument(document);
+            personDto.setCellphone(cellPhone);
+            UserDto userDto = new UserDto();
+            userDto.setPersonId(personDto);
+            userDto.setUserName(userName);
+            userDto.setPassword(password);
+            userDto.setRole("partner");          
+            PartnerDto partnerDto = new PartnerDto();
+            partnerDto.setUserId(userDto);
+            partnerDto.setType("regular");
+            partnerDto.setAmount(amount);
+            partnerDto.setCreationDate(Utils.getDate());   
+            this.service.createPartner(partnerDto);
+            System.out.println("se ha creado el usuario exitosamente");
+            return new ResponseEntity<>("se ha creado el usuario exitosamente", HttpStatus.OK);
+            
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        
     }
     private void invoiceHistory() throws Exception{
         System.out.println("Historial de facturas");
@@ -141,4 +96,6 @@ public  class AdminController implements ControllerInterface{
         this.service.promotiontovip();
         System.out.println("Usuarios promovidos");
     }
+
+
 }
