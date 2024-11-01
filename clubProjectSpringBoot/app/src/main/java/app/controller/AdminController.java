@@ -32,6 +32,7 @@ public  class AdminController implements ControllerInterface{
     private PartnerValidator partnerValidator;
     @Autowired
     private AdminService service;
+    
     private static final String MENU = "ingrese la opcion que desea realizar "
         + "\n 1. para crear Socio "
         + "\n 2. Historial de facturas club"
@@ -41,7 +42,7 @@ public  class AdminController implements ControllerInterface{
         + "\n 6. cerrar sesion";
 
  
-    @PostMapping("/partner")
+    @PostMapping("/create-partner")
     private ResponseEntity CreatePartner(@RequestBody CreationUserRequest request) throws Exception{
         
         try {
@@ -95,6 +96,13 @@ public  class AdminController implements ControllerInterface{
     private void promotiontovip() throws Exception{
         this.service.promotiontovip();
         System.out.println("Usuarios promovidos");
+    }
+
+    
+    
+    
+    @Override
+    public void session() throws Exception {
     }
 
 

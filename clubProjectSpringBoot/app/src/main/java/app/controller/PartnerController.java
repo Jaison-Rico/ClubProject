@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.controller.request.CreationUserRequest;
 import app.controller.validator.InvoiceValidator;
 import app.controller.validator.PartnerValidator;
 import app.controller.validator.PersonValidator;
@@ -15,7 +16,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @NoArgsConstructor
 @Setter
@@ -42,93 +47,39 @@ public class PartnerController implements ControllerInterface  {
         + "\n 6. solicitud a VIP"
         + "\n 7. cerrar sesion";
 
-   
-
-    public void session() throws Exception {
-        boolean session = true;
-        while (session) {
-            session = menu();
-            }
-	}
-
-    private boolean menu() {
-	try {
-            System.out.println(MENU);
-            String option = Utils.getReader().nextLine();
-            return this.options(option);
-            } catch (Exception e) {
-		System.out.println(e.getMessage());
-		return true;
-        }
-    }
-
-    private boolean options(String option) throws Exception {
-	switch (option) {
-            case "1": {
-		this.CreateGuest();
-		return true;
-            }
-            case "2": {
-                this.enableGuest();
-		return true;
-            }
-            case "3":{
-               this.disableGuest();
-                return true;
-            }
-            case "4": {
-                this.incrementAmount();
-                return true;
-            }
-            case "5": {
-                createInvoice();
-                return true;
-            }
-            case "6":{
-                this.PartnerRequestVip();
-                return true;
-            }
-            case "7":{
-                System.out.println("se cierra sesion");
-                return false;
-            }
-            default: {
-                System.out.println("ingrese un valor valido");
-                return true;
-            }
-        }
-    }
     
-    private void CreateGuest() throws Exception{
-        System.out.println("ingrese el nombre del invitado");
-        String name = Utils.getReader().nextLine();
-        personValidator.validName(name);
-        System.out.println("ingrese la cedula del invitado");
-        long document = personValidator.validDocument(Utils.getReader().nextLine());
-        System.out.println("ingrese el numero de ceular del invitado");
-        long cellPhone = personValidator.validCellphone(Utils.getReader().nextLine());
-        System.out.println("ingrese el nombre de usuario del invitado");
-        String userName = Utils.getReader().nextLine();
-        userValidator.validUserName(userName);
-        System.out.println("ingrese la contraseña del invitado");
-        String password = Utils.getReader().nextLine();
-        userValidator.validPassword(password);
-        PersonDto personDto = new PersonDto();
-        personDto.setName(name);
-        personDto.setDocument(document);
-        personDto.setCellphone(cellPhone);
-        UserDto userDto = new UserDto();
-        userDto.setPersonId(personDto);
-        userDto.setUserName(userName);
-        userDto.setPassword(password);
-        userDto.setRole("guest");
-        PartnerDto partnerDto = new PartnerDto();
-        GuestDto guestDto = new GuestDto();
-        guestDto.setUserId(userDto);
-        guestDto.setPartnerId(partnerDto);
-        guestDto.setStatus("inactiva");
-        this.service.createGuest(guestDto);
-        System.out.println("se ha creado el usuario exitosamente");
+    @PostMapping("/create-guest")
+    private ResponseEntity CreateGuest( @RequestBody CreationUserRequest request ) throws Exception{
+        try {
+            String name = request.getName();
+            personValidator.validName(name);
+            long document = personValidator.validDocument(request.getDocument());
+            long cellPhone = personValidator.validCellphone(request.getCellPhone());
+            String userName = request.getUserName();
+            userValidator.validUserName(userName);
+            String password = request.getPassword();
+            userValidator.validPassword(password);
+            PersonDto personDto = new PersonDto();
+            personDto.setName(name);
+            personDto.setDocument(document);
+            personDto.setCellphone(cellPhone);
+            UserDto userDto = new UserDto();
+            userDto.setPersonId(personDto);
+            userDto.setUserName(userName);
+            userDto.setPassword(password);
+            userDto.setRole("guest");
+            PartnerDto partnerDto = new PartnerDto();
+            GuestDto guestDto = new GuestDto();
+            guestDto.setUserId(userDto);
+            guestDto.setPartnerId(partnerDto);
+            guestDto.setStatus("inactiva");
+            this.service.createGuest(guestDto);
+            System.out.println("se ha creado el usuario exitosamente");
+            return new ResponseEntity<>("se ha creado el usuario exitosamente", HttpStatus.OK);
+        } catch (Exception e) {
+             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        
     }
     private void createInvoice() throws Exception {
         System.out.println("ingrese el item de la factura");  
@@ -184,6 +135,11 @@ public class PartnerController implements ControllerInterface  {
         long document = personValidator.validDocument(Utils.getReader().nextLine());
         this.service.enableGuest(document);
         System.out.println("usuario activado");
+    }
+
+    @Override
+    public void session() throws Exception {
+   
     }
     
 }
