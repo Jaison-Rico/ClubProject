@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.controller.request.CreationInvoiceRequest;
 import app.controller.request.CreationUserRequest;
 import app.controller.validator.InvoiceValidator;
 import app.controller.validator.PartnerValidator;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Setter
 @Getter
 @Controller
-public class PartnerController implements ControllerInterface  {
+public class PartnerController{
     @Autowired
     private PersonValidator personValidator;
     @Autowired
@@ -40,15 +41,6 @@ public class PartnerController implements ControllerInterface  {
     @Autowired
     private PartnerService service;
     
-    private static final String MENU = "ingrese la opcion que desea realizar "
-        + "\n 1. Crear invitado"
-        + "\n 2. habilitar invitado"
-        + "\n 3. deshabilitar invitado"
-        + "\n 4. incremento de fondo"
-        + "\n 5. hacer consumo"
-        + "\n 6. solicitud a VIP"
-        + "\n 7. cerrar sesion";
-
     
     @PostMapping("/create-guest")
     private ResponseEntity CreateGuest( @RequestBody CreationUserRequest request ) throws Exception{
@@ -83,33 +75,50 @@ public class PartnerController implements ControllerInterface  {
         }
         
     }
-    private void createInvoice() throws Exception {
-        System.out.println("ingrese el item de la factura");  
-        int item = invoiceValidator.validItem(Utils.getReader().nextLine());
-        System.out.println("ingrese la descripcion de la factura");  
-        String description = Utils.getReader().nextLine();
-        invoiceValidator.validDescription(description);
-        System.out.println("ingrese el valor de la factura");  
-        double amount = invoiceValidator.validAmount(Utils.getReader().nextLine());
+    
+    
+    @PostMapping("/create-invoice")
+    private ResponseEntity createInvoice(@RequestBody CreationInvoiceRequest request) throws Exception {
         
-        PersonDto personDto = new PersonDto();
-        PartnerDto partnerDto = new PartnerDto();
-        //
-        InvoiceDto invoiceDto = new InvoiceDto();
-        invoiceDto.setPersonId(personDto);
-        invoiceDto.setPartnerId(partnerDto);
-        invoiceDto.setStatus("Sin pagar");
-        invoiceDto.setAmount(amount);
-        invoiceDto.setCreationDate(Utils.getDate()); 
-        InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
-        invoiceDetailDto.setInvoiceId(invoiceDto);
-        invoiceDetailDto.setItem(item);
-        invoiceDetailDto.setDescription(description);
-        invoiceDetailDto.setAmount(amount);
-        this.service.createInvoiceDetail(invoiceDetailDto);
-        System.out.println("se ha creado la factura exitosamente");
+        try {
+            int item = invoiceValidator.validItem(request.getItem());
+            String description = request.getDescription();
+            invoiceValidator.validDescription(description); 
+            double amount = invoiceValidator.validAmount(request.getAmount());
+
+            PersonDto personDto = new PersonDto();
+            PartnerDto partnerDto = new PartnerDto();
+            partnerDto.setId(request.getUserSesion());
+            //
+            InvoiceDto invoiceDto = new InvoiceDto();
+            invoiceDto.setPersonId(personDto);
+            invoiceDto.setPartnerId(partnerDto);
+            invoiceDto.setStatus("Sin pagar");
+            invoiceDto.setAmount(amount);
+            invoiceDto.setCreationDate(Utils.getDate()); 
+            InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
+            invoiceDetailDto.setInvoiceId(invoiceDto);
+            invoiceDetailDto.setItem(item);
+            invoiceDetailDto.setDescription(description);
+            invoiceDetailDto.setAmount(amount);
+            this.service.createInvoiceDetail(invoiceDetailDto);
+            return ResponseEntity.ok("se ha creado la factura exitosamente");
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        
         
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private void incrementAmount() throws Exception{
         System.out.println("Ingrese el monto que desea aumentar");
         double amount = partnerValidator.validAmount(Utils.getReader().nextLine());   
@@ -124,6 +133,12 @@ public class PartnerController implements ControllerInterface  {
         this.service.PartnerRequestVip(partnerDto);
         System.out.println("solicitud enviada");
     }
+    
+    
+    
+    
+    
+    
     
     @GetMapping("disable-guest/{document}")
     private ResponseEntity disableGuest(@PathVariable long document)throws Exception{
@@ -145,9 +160,5 @@ public class PartnerController implements ControllerInterface  {
         }
     }
 
-    @Override
-    public void session() throws Exception {
-   
-    }
     
 }

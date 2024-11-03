@@ -13,7 +13,6 @@ import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
 import app.service.interfaces.AdminService;
-import app.service.interfaces.LoginService;
 import app.service.interfaces.PartnerService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +30,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Service
-public class ClubService implements LoginService, AdminService, PartnerService, GuestService {
+public class ClubService implements  AdminService, PartnerService, GuestService {
     
     @Autowired
     private UserDao userDao;
@@ -48,24 +47,7 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
     public static UserDto user;
     
     
-    
-    public void login(UserDto userDto) throws Exception {
-        UserDto validateDto = userDao.findByUserName(userDto);
-        if (validateDto == null) {
-            throw new Exception("no existe usuario registrado");
-        }
-	if (!userDto.getPassword().equals(validateDto.getPassword())) {
-            throw new Exception("usuario o contraseña incorrecto");
-	}
-	userDto.setRole(validateDto.getRole());
-	user = validateDto;
-    }
 
-    @Override
-    public void logout() {
-        user = null;
-        System.out.println("Se ha cerrado session");
-    }
 
     @Override
     public void createPartner(PartnerDto partnerDto) throws Exception {
@@ -109,14 +91,15 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
     
     @Override
     public void createInvoice(InvoiceDto InvoiceDto) throws Exception {
-        if(user.getRole().equals("partner")){
-            PartnerDto partnerDto = this.partnerDao.findByUserId(user);
+        UserDto userDto = this.userDao.findByid(InvoiceDto.getPartnerId().getId());
+        if(userDto.getRole().equals("partner")){
+            PartnerDto partnerDto = this.partnerDao.findByUserId(userDto);
             InvoiceDto.setPartnerId(partnerDto);
         }else{
-            GuestDto guestDto = this.guestDao.findByUserId(user);
+            GuestDto guestDto = this.guestDao.findByUserId(userDto);
             InvoiceDto.setPartnerId(guestDto.getPartnerId()); 
         }
-        InvoiceDto.setPersonId(user.getPersonId());
+        InvoiceDto.setPersonId(userDto.getPersonId());
         this.invoiceDao.createInvoice(InvoiceDto);
     }
 

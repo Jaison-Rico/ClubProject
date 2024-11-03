@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Setter
 @NoArgsConstructor
 @RestController
-public  class AdminController implements ControllerInterface{
+public  class AdminController {
     @Autowired
     private PersonValidator personValidator;
     @Autowired
@@ -36,15 +36,6 @@ public  class AdminController implements ControllerInterface{
     private PartnerValidator partnerValidator;
     @Autowired
     private AdminService service;
-    
-    private static final String MENU = "ingrese la opcion que desea realizar "
-        + "\n 1. para crear Socio "
-        + "\n 2. Historial de facturas club"
-        + "\n 3. promocion a VIP"
-        + "\n 4. Historial facturas socios" 
-        + "\n 5. Historial facturas invitado"
-        + "\n 6. cerrar sesion";
-
  
     @PostMapping("/create-partner")
     private ResponseEntity CreatePartner(@RequestBody CreationUserRequest request) throws Exception{
@@ -131,13 +122,6 @@ public  class AdminController implements ControllerInterface{
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         
-    }
-
-    
-    
-    
-    @Override
-    public void session() throws Exception {
     }
 
 

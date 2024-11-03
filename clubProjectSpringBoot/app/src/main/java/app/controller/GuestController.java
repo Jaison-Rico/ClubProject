@@ -18,58 +18,12 @@ import org.springframework.stereotype.Controller;
 @Setter
 @Getter
 @Controller
-public class GuestController implements ControllerInterface{
+public class GuestController{
     
     @Autowired
     private InvoiceValidator invoiceValidator;
     @Autowired
     private GuestService service;
-    @Override
-    public void session() throws Exception {
-        boolean session = true;
-        while (session) {
-            session = menu();
-            }
-	}
-    
-    private static final String MENU = "ingrese la opcion que desea realizar "
-        + "\n 1. Crear Factura"
-        + "\n 2. Conventirse en socio"
-        + "\n 3. cerrar sesion";
-    
-    
-    private boolean menu() {
-	try {
-            System.out.println(MENU);
-            String option = Utils.getReader().nextLine();
-            return this.options(option);
-            } catch (Exception e) {
-		System.out.println(e.getMessage());
-		return true;
-        }
-    }
-    
-    private boolean options(String option) throws Exception {
-	switch (option) {
-            case "1": {
-		this.createInvoice();
-		return true;
-            }
-            case "2":{
-                convertPartner();
-                return false;
-            }
-            case "3":{
-                System.out.println("se cierra sesion");
-                return false;
-            }
-            default: {
-                System.out.println("ingrese un valor valido");
-                return true;
-            }
-        }
-    }
-
     
     private void createInvoice() throws Exception { 
         System.out.println("ingrese el item de la factura");  
