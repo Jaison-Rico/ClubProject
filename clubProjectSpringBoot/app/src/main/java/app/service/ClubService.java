@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import app.dao.interfaces.InvoiceDao;
 import app.dao.interfaces.InvoiceDetailDao;
-import app.model.InvoiceDetail;
 import app.service.interfaces.GuestService;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +78,9 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
     @Override
     public void createGuest(GuestDto guestDto) throws Exception {
         this.createUser(guestDto.getUserId());
-        guestDto.setPartnerId(partnerDao.findByUserId(user));  
+        UserDto userDto = this.userDao.findByid(guestDto.getPartnerId().getId());
+        guestDto.setPartnerId(partnerDao.findByUserId(userDto));
+
         this.guestDao.createGuest(guestDto);
         
     }

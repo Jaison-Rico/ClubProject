@@ -69,6 +69,7 @@ public class PartnerController implements ControllerInterface  {
             userDto.setPassword(password);
             userDto.setRole("guest");
             PartnerDto partnerDto = new PartnerDto();
+            partnerDto.setId(request.getUserSesion());
             GuestDto guestDto = new GuestDto();
             guestDto.setUserId(userDto);
             guestDto.setPartnerId(partnerDto);

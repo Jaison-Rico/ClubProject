@@ -23,14 +23,6 @@ public class UserDaoImplementation implements UserDao{
     public UserRepository UserRepository;
     @Override
     public UserDto findByUserName(UserDto userDto) throws Exception {
-         // user admin :D    
-        UserDto validateDto = new UserDto();
-        if(userDto.getUserName().equals("admin")) {
-            validateDto.setUserName(userDto.getUserName());
-            validateDto.setRole(userDto.getUserName());
-            validateDto.setPassword("admin");
-            return validateDto;
-        }
         return Helper.parse( UserRepository.findByUserName(userDto.getUserName()));
         
     }
@@ -68,5 +60,10 @@ public class UserDaoImplementation implements UserDao{
         User user = Helper.parse(userDto);
         user.setRole("partner");
         UserRepository.save(user);
+    }
+
+    @Override
+    public UserDto findByid(long id) throws Exception {
+        return Helper.parse(UserRepository.findById(id));
     }
 }

@@ -15,4 +15,5 @@ public class CreationUserRequest {
     private String userName;
     private String password;
     private String amount;
+    private long userSesion;
 }
