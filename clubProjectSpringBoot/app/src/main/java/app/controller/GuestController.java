@@ -61,6 +61,8 @@ public class GuestController{
         
     }
     
+    
+    
     private void convertPartner() throws Exception {
         PartnerDto parnetDto = new PartnerDto();
         UserDto userDto = new UserDto();

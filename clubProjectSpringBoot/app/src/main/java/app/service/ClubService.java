@@ -158,8 +158,9 @@ public class ClubService implements  AdminService, PartnerService, GuestService 
 
     @Override
     public void incrementAmount(PartnerDto partnerDto) throws Exception {
+        UserDto userDto = this.userDao.findByid(partnerDto.getId());
         PartnerDto partner = new PartnerDto();
-        partner = this.partnerDao.findByUserId(user);
+        partner = this.partnerDao.findByUserId(userDto);
         partner.setAmount(partner.getAmount() + partnerDto.getAmount());
         if(partner.getAmount() > 1000000 && partner.isType().equals("regular")){
             throw  new Exception("El tope maximo para socios regulares es de 1 Millon");
@@ -168,7 +169,6 @@ public class ClubService implements  AdminService, PartnerService, GuestService 
         }
         
         this.partnerDao.incrementAmount(partner);
-        System.out.println("valor actual del fondo del socio: " + partner.getAmount());
     }
 
     @Override

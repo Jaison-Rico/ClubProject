@@ -2,6 +2,7 @@ package app.controller;
 
 import app.controller.request.CreationInvoiceRequest;
 import app.controller.request.CreationUserRequest;
+import app.controller.request.PostIncrementAmount;
 import app.controller.validator.InvoiceValidator;
 import app.controller.validator.PartnerValidator;
 import app.controller.validator.PersonValidator;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
 
 @NoArgsConstructor
 @Setter
@@ -74,56 +76,29 @@ public class PartnerController{
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         
-    }
+    } 
     
     
-    @PostMapping("/create-invoice")
-    private ResponseEntity createInvoice(@RequestBody CreationInvoiceRequest request) throws Exception {
-        
+    
+    
+    
+    @PostMapping("/increment-amount")
+    private ResponseEntity incrementAmount(@RequestBody PostIncrementAmount request) throws Exception{
         try {
-            int item = invoiceValidator.validItem(request.getItem());
-            String description = request.getDescription();
-            invoiceValidator.validDescription(description); 
-            double amount = invoiceValidator.validAmount(request.getAmount());
-
-            PersonDto personDto = new PersonDto();
+            double amount = partnerValidator.validAmount(request.getAmount());   
             PartnerDto partnerDto = new PartnerDto();
             partnerDto.setId(request.getUserSesion());
-            //
-            InvoiceDto invoiceDto = new InvoiceDto();
-            invoiceDto.setPersonId(personDto);
-            invoiceDto.setPartnerId(partnerDto);
-            invoiceDto.setStatus("Sin pagar");
-            invoiceDto.setAmount(amount);
-            invoiceDto.setCreationDate(Utils.getDate()); 
-            InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
-            invoiceDetailDto.setInvoiceId(invoiceDto);
-            invoiceDetailDto.setItem(item);
-            invoiceDetailDto.setDescription(description);
-            invoiceDetailDto.setAmount(amount);
-            this.service.createInvoiceDetail(invoiceDetailDto);
-            return ResponseEntity.ok("se ha creado la factura exitosamente");
+            partnerDto.setAmount(amount);
+            this.service.incrementAmount(partnerDto);
+            return ResponseEntity.ok("Se incrementaron los fondos correctamente");
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }              
+        }
     }
     
     
     
     
-    
-    
-    
-    
-    
-    
-    private void incrementAmount() throws Exception{
-        System.out.println("Ingrese el monto que desea aumentar");
-        double amount = partnerValidator.validAmount(Utils.getReader().nextLine());   
-        PartnerDto partnerDto = new PartnerDto();
-        partnerDto.setAmount(amount);
-        this.service.incrementAmount(partnerDto);
-    }
     private void PartnerRequestVip() throws Exception{
         System.out.println("Ascender socio regular a VIP");    
         PartnerDto partnerDto = new PartnerDto();
