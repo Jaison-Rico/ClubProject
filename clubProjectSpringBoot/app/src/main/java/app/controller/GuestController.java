@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.controller.request.CreationInvoiceRequest;
 import app.controller.validator.InvoiceValidator;
 
 import app.dto.InvoiceDetailDto;
@@ -12,7 +13,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @NoArgsConstructor
 @Setter
@@ -25,31 +30,34 @@ public class GuestController{
     @Autowired
     private GuestService service;
     
-    private void createInvoice() throws Exception { 
-        System.out.println("ingrese el item de la factura");  
-        int item = invoiceValidator.validItem(Utils.getReader().nextLine());
-        System.out.println("ingrese la descripcion de la factura");  
-        String description = Utils.getReader().nextLine();
-        invoiceValidator.validDescription(description);
-        System.out.println("ingrese el valor de la factura");  
-        double amount = invoiceValidator.validAmount(Utils.getReader().nextLine());
-        
-        PersonDto personDto = new PersonDto();
-        PartnerDto partnerDto = new PartnerDto();
-        //
-        InvoiceDto invoiceDto = new InvoiceDto();
-        invoiceDto.setPersonId(personDto);
-        invoiceDto.setPartnerId(partnerDto);
-        invoiceDto.setStatus("Sin pagar");
-        invoiceDto.setAmount(amount);
-        invoiceDto.setCreationDate(Utils.getDate()); 
-        InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
-        invoiceDetailDto.setInvoiceId(invoiceDto);
-        invoiceDetailDto.setItem(item);
-        invoiceDetailDto.setDescription(description);
-        invoiceDetailDto.setAmount(amount);
-        this.service.createInvoiceDetail(invoiceDetailDto);
-        System.out.println("se ha creado la factura exitosamente");
+    @PostMapping("/create-invoice")
+    private ResponseEntity createInvoice(@RequestBody CreationInvoiceRequest request) throws Exception {  
+        try {
+            int item = invoiceValidator.validItem(request.getItem());
+            String description = request.getDescription();
+            invoiceValidator.validDescription(description); 
+            double amount = invoiceValidator.validAmount(request.getAmount());
+
+            PersonDto personDto = new PersonDto();
+            PartnerDto partnerDto = new PartnerDto();
+            partnerDto.setId(request.getUserSesion());
+            //
+            InvoiceDto invoiceDto = new InvoiceDto();
+            invoiceDto.setPersonId(personDto);
+            invoiceDto.setPartnerId(partnerDto);
+            invoiceDto.setStatus("Sin pagar");
+            invoiceDto.setAmount(amount);
+            invoiceDto.setCreationDate(Utils.getDate()); 
+            InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
+            invoiceDetailDto.setInvoiceId(invoiceDto);
+            invoiceDetailDto.setItem(item);
+            invoiceDetailDto.setDescription(description);
+            invoiceDetailDto.setAmount(amount);
+            this.service.createInvoiceDetail(invoiceDetailDto);
+            return ResponseEntity.ok("se ha creado la factura exitosamente");
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         
     }
     

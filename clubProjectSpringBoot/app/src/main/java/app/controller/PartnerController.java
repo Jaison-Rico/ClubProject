@@ -105,9 +105,7 @@ public class PartnerController{
             return ResponseEntity.ok("se ha creado la factura exitosamente");
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        
-        
+        }              
     }
     
     
