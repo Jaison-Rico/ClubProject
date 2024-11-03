@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -74,9 +75,6 @@ public  class AdminController {
         }
         
     }
-    
-    
-    
     @GetMapping("/invoices")
     private ResponseEntity invoiceHistory() throws Exception{
         try {
@@ -98,8 +96,6 @@ public  class AdminController {
         }
         
     }
-    
-    
     @GetMapping("/invoice-guest/{document}")
     private ResponseEntity invoiceHistoryGuest(@PathVariable long document) throws Exception{
         try {
@@ -111,9 +107,7 @@ public  class AdminController {
        
         
     }
-    
-    
-    @GetMapping("/promotionVip")
+    @PutMapping("/promotionVip")
     private ResponseEntity promotiontovip() throws Exception{
         try {
             this.service.promotiontovip();

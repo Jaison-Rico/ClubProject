@@ -24,6 +24,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -42,6 +44,8 @@ public class PartnerController{
     private InvoiceValidator invoiceValidator;
     @Autowired
     private PartnerService service;
+    
+    
     
     
     @PostMapping("/create-guest")
@@ -77,12 +81,7 @@ public class PartnerController{
         }
         
     } 
-    
-    
-    
-    
-    
-    @PostMapping("/increment-amount")
+    @PutMapping("/increment-amount")
     private ResponseEntity incrementAmount(@RequestBody PostIncrementAmount request) throws Exception{
         try {
             double amount = partnerValidator.validAmount(request.getAmount());   
@@ -95,25 +94,20 @@ public class PartnerController{
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-    
-    
-    
-    
-    private void PartnerRequestVip() throws Exception{
-        System.out.println("Ascender socio regular a VIP");    
-        PartnerDto partnerDto = new PartnerDto();
-        partnerDto.setType("pendiente");
-        this.service.PartnerRequestVip(partnerDto);
-        System.out.println("solicitud enviada");
+    @PutMapping("Request-vip/{partnerId}")
+    private ResponseEntity PartnerRequestVip(@PathVariable long partnerId) throws Exception{
+        try {
+            PartnerDto partnerDto = new PartnerDto();
+            partnerDto.setId(partnerId);
+            partnerDto.setType("pendiente");
+            String response = this.service.PartnerRequestVip(partnerDto);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        
     }
-    
-    
-    
-    
-    
-    
-    
-    @GetMapping("disable-guest/{document}")
+    @PutMapping("disable-guest/{document}")
     private ResponseEntity disableGuest(@PathVariable long document)throws Exception{
         try {
             this.service.disableGuest(document);
@@ -123,7 +117,7 @@ public class PartnerController{
         }
         
     }
-    @GetMapping("enable-guest/{document}")
+    @PutMapping("enable-guest/{document}")
     private ResponseEntity enableGuest(@PathVariable long document)throws Exception{
         try {
             this.service.enableGuest(document);

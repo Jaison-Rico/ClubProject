@@ -172,11 +172,12 @@ public class ClubService implements  AdminService, PartnerService, GuestService 
     }
 
     @Override
-    public void PartnerRequestVip(PartnerDto partnerDto) throws Exception {
-        PartnerDto partner = this.partnerDao.findByUserId(user);
+    public String PartnerRequestVip(PartnerDto partnerDto) throws Exception {
+        UserDto userDto = this.userDao.findByid(partnerDto.getId());
+        PartnerDto partner = this.partnerDao.findByUserId(userDto);
         partner.setType(partnerDto.isType());
         this.partnerDao.PartnerVipPromotion(partner);
-        System.out.println("status actual del partner: "+ partner.isType());
+        return "status actual del partner: "+ partner.isType();
     }
 
     @Override
