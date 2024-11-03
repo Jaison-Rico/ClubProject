@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -82,22 +83,46 @@ public  class AdminController implements ControllerInterface{
         }
         
     }
+    
+    
+    
     @GetMapping("/invoices")
     private ResponseEntity invoiceHistory() throws Exception{
-       List<InvoiceDetailDto> listInvoicesDetailDto = this.service.invoiceHistory();
-       return ResponseEntity.ok(listInvoicesDetailDto);
+        try {
+            List<InvoiceDetailDto> listInvoicesDetailDto = this.service.invoiceHistory();
+            return ResponseEntity.ok(listInvoicesDetailDto);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+       
         
     }
-    private void invoiceHistoryPartner() throws Exception{
-        System.out.println("historial de facturas del socio: ");
-        long document = personValidator.validDocument(Utils.getReader().nextLine());
-        this.service.invoiceHistoryPartner(document);
+    @GetMapping("/invoice-partner/{document}")
+    private ResponseEntity invoiceHistoryPartner(@PathVariable long document) throws Exception{
+        try {
+            List<InvoiceDetailDto> listInvoicesDetailDto = this.service.invoiceHistoryPartner(document);
+            return ResponseEntity.ok(listInvoicesDetailDto);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        
     }
-    private void invoiceHistoryGuest() throws Exception{
-        System.out.println("Documento del invitado: ");
-        long document = personValidator.validDocument(Utils.getReader().nextLine());
-        this.service.invoiceHistoryGuest(document);
+    
+    
+    @GetMapping("/invoice-guest/{document}")
+    private ResponseEntity invoiceHistoryGuest(@PathVariable long document) throws Exception{
+        try {
+            List<InvoiceDetailDto> listInvoicesDetailDto = this.service.invoiceHistoryGuest(document);
+            return ResponseEntity.ok(listInvoicesDetailDto);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+       
+        
     }
+    
+    
+    
     private void promotiontovip() throws Exception{
         this.service.promotiontovip();
         System.out.println("Usuarios promovidos");

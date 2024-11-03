@@ -22,7 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import app.dao.interfaces.InvoiceDao;
 import app.dao.interfaces.InvoiceDetailDao;
+import app.model.InvoiceDetail;
 import app.service.interfaces.GuestService;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -196,27 +198,12 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
     @Override
     public List<InvoiceDetailDto> invoiceHistory() throws Exception {
         List<InvoiceDetailDto> listInvoicesDetailDto = this.invoideDetailDao.listClubInvoices();
-        for(InvoiceDetailDto invoiceDetailDto : listInvoicesDetailDto){
-            System.out.println("ENCABEZADO DE LA FACTURA"
-                + "\nID: " + invoiceDetailDto.getInvoiceId().getId()
-                + "\nDOCUMENTO: " + invoiceDetailDto.getInvoiceId().getPersonId().getDocument()
-                + "\nSOCIO: " + invoiceDetailDto.getInvoiceId().getPartnerId().getUserId().getUserName()
-                + "\nFEHCA: " + invoiceDetailDto.getInvoiceId().getCreationDate()
-                + "\nVALOR TOTAL: " + invoiceDetailDto.getInvoiceId().getAmount()
-                + "\nESTADO: " + invoiceDetailDto.getInvoiceId().isStatus()
-                + "\nDETALLES DE LA FACTURA"
-                + "\nID: " + invoiceDetailDto.getId()
-                + "\nENCABEZADO ID: " + invoiceDetailDto.getInvoiceId().getId()
-                + "\nNUMERO DEL ITEM: " + invoiceDetailDto.getItem()
-                + "\nDESCRIPCION: " + invoiceDetailDto.getDescription()
-                + "\nVALOR DEL ITEM: " + invoiceDetailDto.getAmount());
-        }
         return listInvoicesDetailDto;
         
     }
 
     @Override
-    public void invoiceHistoryPartner(long document) throws Exception {
+    public List<InvoiceDetailDto> invoiceHistoryPartner(long document) throws Exception {
         PersonDto personDto = new PersonDto();
         personDto.setDocument(document);
         if(this.personDao.existsByDocument(personDto) == false) {
@@ -229,30 +216,19 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
             throw new Exception("Esta persona no es un socio");
         }
         List<InvoiceDetailDto> listInvoicesDetailDto = this.invoideDetailDao.listClubInvoices();
+        List<InvoiceDetailDto> listInvoicesDetialPartner = new ArrayList<>();
         for(InvoiceDetailDto invoiceDetailDto : listInvoicesDetailDto){
             if(invoiceDetailDto.getInvoiceId().getPersonId().getDocument() == document){
-                System.out.println("######################");
-                System.out.println("ENCABEZADO DE LA FACTURA"
-                    + "\nID: " + invoiceDetailDto.getInvoiceId().getId()
-                    + "\nDOCUMENTO: " + invoiceDetailDto.getInvoiceId().getPersonId().getDocument()
-                    + "\nSOCIO: " + invoiceDetailDto.getInvoiceId().getPartnerId().getUserId().getUserName()
-                    + "\nFEHCA: " + invoiceDetailDto.getInvoiceId().getCreationDate()
-                    + "\nVALOR TOTAL: " + invoiceDetailDto.getInvoiceId().getAmount()
-                    + "\nESTADO: " + invoiceDetailDto.getInvoiceId().isStatus()
-                    + "\nDETALLES DE LA FACTURA"
-                    + "\nID: " + invoiceDetailDto.getId()
-                    + "\nENCABEZADO ID: " + invoiceDetailDto.getInvoiceId().getId()
-                    + "\nNUMERO DEL ITEM: " + invoiceDetailDto.getItem()
-                    + "\nDESCRIPCION: " + invoiceDetailDto.getDescription()
-                    + "\nVALOR DEL ITEM: " + invoiceDetailDto.getAmount());
+                listInvoicesDetialPartner.add(invoiceDetailDto);
             }    
         }
+        return listInvoicesDetialPartner;
             
     }
 
     @Override
-    public void invoiceHistoryGuest(long document) throws Exception {
-      PersonDto personDto = new PersonDto();
+    public List<InvoiceDetailDto> invoiceHistoryGuest(long document) throws Exception {
+        PersonDto personDto = new PersonDto();
         personDto.setDocument(document);
         if(this.personDao.existsByDocument(personDto) == false) {
             throw new Exception("no existe una persona con ese documento");
@@ -264,24 +240,13 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
             throw new Exception("Esta persona no es un invitado");
         }
         List<InvoiceDetailDto> listInvoicesDetailDto = this.invoideDetailDao.listClubInvoices();
+        List<InvoiceDetailDto> listInvoicesDetialGuest = new ArrayList<>();
         for(InvoiceDetailDto invoiceDetailDto : listInvoicesDetailDto){
             if(invoiceDetailDto.getInvoiceId().getPersonId().getDocument() == document){
-                System.out.println("######################");
-                System.out.println("ENCABEZADO DE LA FACTURA"
-                    + "\nID: " + invoiceDetailDto.getInvoiceId().getId()
-                    + "\nDOCUMENTO: " + invoiceDetailDto.getInvoiceId().getPersonId().getDocument()
-                    + "\nSOCIO: " + invoiceDetailDto.getInvoiceId().getPartnerId().getUserId().getUserName()
-                    + "\nFEHCA: " + invoiceDetailDto.getInvoiceId().getCreationDate()
-                    + "\nVALOR TOTAL: " + invoiceDetailDto.getInvoiceId().getAmount()
-                    + "\nESTADO: " + invoiceDetailDto.getInvoiceId().isStatus()
-                    + "\nDETALLES DE LA FACTURA"
-                    + "\nID: " + invoiceDetailDto.getId()
-                    + "\nENCABEZADO ID: " + invoiceDetailDto.getInvoiceId().getId()
-                    + "\nNUMERO DEL ITEM: " + invoiceDetailDto.getItem()
-                    + "\nDESCRIPCION: " + invoiceDetailDto.getDescription()
-                    + "\nVALOR DEL ITEM: " + invoiceDetailDto.getAmount());
+                listInvoicesDetialGuest.add(invoiceDetailDto);
             }    
-        }  
+        }
+        return listInvoicesDetialGuest;
     }
 
 }
