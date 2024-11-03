@@ -122,10 +122,15 @@ public  class AdminController implements ControllerInterface{
     }
     
     
-    
-    private void promotiontovip() throws Exception{
-        this.service.promotiontovip();
-        System.out.println("Usuarios promovidos");
+    @GetMapping("/promotionVip")
+    private ResponseEntity promotiontovip() throws Exception{
+        try {
+            this.service.promotiontovip();
+            return ResponseEntity.ok("Usuarios promovidos");
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        
     }
 
     
