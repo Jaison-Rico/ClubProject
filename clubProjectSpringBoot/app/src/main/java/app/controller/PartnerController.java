@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -75,10 +77,9 @@ public class PartnerController implements ControllerInterface  {
             guestDto.setPartnerId(partnerDto);
             guestDto.setStatus("inactiva");
             this.service.createGuest(guestDto);
-            System.out.println("se ha creado el usuario exitosamente");
             return new ResponseEntity<>("se ha creado el usuario exitosamente", HttpStatus.OK);
         } catch (Exception e) {
-             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         
     }
@@ -123,19 +124,25 @@ public class PartnerController implements ControllerInterface  {
         this.service.PartnerRequestVip(partnerDto);
         System.out.println("solicitud enviada");
     }
-    private void disableGuest()throws Exception{
-        System.out.println("desactivar invitado");
-        System.out.println("numero de cedula del invitado");
-        long document = personValidator.validDocument(Utils.getReader().nextLine());
-        this.service.disableGuest(document);
-        System.out.println("usuario desactivado");
+    
+    @GetMapping("disable-guest/{document}")
+    private ResponseEntity disableGuest(@PathVariable long document)throws Exception{
+        try {
+            this.service.disableGuest(document);
+            return ResponseEntity.ok("se ha desactivado correctamente");
+        } catch (Exception e) {
+           return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); 
+        }
+        
     }
-    private void enableGuest()throws Exception{
-        System.out.println("activar invitado");
-        System.out.println("numero de cedula del invitado");
-        long document = personValidator.validDocument(Utils.getReader().nextLine());
-        this.service.enableGuest(document);
-        System.out.println("usuario activado");
+    @GetMapping("enable-guest/{document}")
+    private ResponseEntity enableGuest(@PathVariable long document)throws Exception{
+        try {
+            this.service.enableGuest(document);
+            return ResponseEntity.ok("se ha activado correctamente");
+        } catch (Exception e) {
+           return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); 
+        }
     }
 
     @Override
