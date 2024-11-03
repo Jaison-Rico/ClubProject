@@ -13,7 +13,6 @@ import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
 import app.service.interfaces.AdminService;
-import app.service.interfaces.LoginService;
 import app.service.interfaces.PartnerService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +22,7 @@ import org.springframework.stereotype.Service;
 import app.dao.interfaces.InvoiceDao;
 import app.dao.interfaces.InvoiceDetailDao;
 import app.service.interfaces.GuestService;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,7 +30,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Service
-public class ClubService implements LoginService, AdminService, PartnerService, GuestService {
+public class ClubService implements  AdminService, PartnerService, GuestService {
     
     @Autowired
     private UserDao userDao;
@@ -47,24 +47,7 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
     public static UserDto user;
     
     
-    
-    public void login(UserDto userDto) throws Exception {
-        UserDto validateDto = userDao.findByUserName(userDto);
-        if (validateDto == null) {
-            throw new Exception("no existe usuario registrado");
-        }
-	if (!userDto.getPassword().equals(validateDto.getPassword())) {
-            throw new Exception("usuario o contraseña incorrecto");
-	}
-	userDto.setRole(validateDto.getRole());
-	user = validateDto;
-    }
 
-    @Override
-    public void logout() {
-        user = null;
-        System.out.println("Se ha cerrado session");
-    }
 
     @Override
     public void createPartner(PartnerDto partnerDto) throws Exception {
@@ -77,7 +60,9 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
     @Override
     public void createGuest(GuestDto guestDto) throws Exception {
         this.createUser(guestDto.getUserId());
-        guestDto.setPartnerId(partnerDao.findByUserId(user));  
+        UserDto userDto = this.userDao.findByid(guestDto.getPartnerId().getId());
+        guestDto.setPartnerId(partnerDao.findByUserId(userDto));
+
         this.guestDao.createGuest(guestDto);
         
     }
@@ -106,14 +91,15 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
     
     @Override
     public void createInvoice(InvoiceDto InvoiceDto) throws Exception {
-        if(user.getRole().equals("partner")){
-            PartnerDto partnerDto = this.partnerDao.findByUserId(user);
+        UserDto userDto = this.userDao.findByid(InvoiceDto.getPartnerId().getId());
+        if(userDto.getRole().equals("partner")){
+            PartnerDto partnerDto = this.partnerDao.findByUserId(userDto);
             InvoiceDto.setPartnerId(partnerDto);
         }else{
-            GuestDto guestDto = this.guestDao.findByUserId(user);
+            GuestDto guestDto = this.guestDao.findByUserId(userDto);
             InvoiceDto.setPartnerId(guestDto.getPartnerId()); 
         }
-        InvoiceDto.setPersonId(user.getPersonId());
+        InvoiceDto.setPersonId(userDto.getPersonId());
         this.invoiceDao.createInvoice(InvoiceDto);
     }
 
@@ -160,10 +146,11 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
 
     @Override
     public void convertPartner(PartnerDto partnerDto) throws Exception {
-        this.userDao.convertPartner(user);
+        UserDto userDto = this.userDao.findByid(partnerDto.getId());
+        this.userDao.convertPartner(userDto);
         GuestDto guestDto = new GuestDto();
-        guestDto = this.guestDao.findByUserId(user);
-        partnerDto.setUserId(user);
+        guestDto = this.guestDao.findByUserId(userDto);
+        partnerDto.setUserId(userDto);
         this.partnerDao.createPartner(partnerDto);
         this.guestDao.deleteGuest(guestDto);
         
@@ -172,8 +159,9 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
 
     @Override
     public void incrementAmount(PartnerDto partnerDto) throws Exception {
+        UserDto userDto = this.userDao.findByid(partnerDto.getId());
         PartnerDto partner = new PartnerDto();
-        partner = this.partnerDao.findByUserId(user);
+        partner = this.partnerDao.findByUserId(userDto);
         partner.setAmount(partner.getAmount() + partnerDto.getAmount());
         if(partner.getAmount() > 1000000 && partner.isType().equals("regular")){
             throw  new Exception("El tope maximo para socios regulares es de 1 Millon");
@@ -182,41 +170,26 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
         }
         
         this.partnerDao.incrementAmount(partner);
-        System.out.println("valor actual del fondo del socio: " + partner.getAmount());
     }
 
     @Override
-    public void PartnerRequestVip(PartnerDto partnerDto) throws Exception {
-        PartnerDto partner = this.partnerDao.findByUserId(user);
+    public String PartnerRequestVip(PartnerDto partnerDto) throws Exception {
+        UserDto userDto = this.userDao.findByid(partnerDto.getId());
+        PartnerDto partner = this.partnerDao.findByUserId(userDto);
         partner.setType(partnerDto.isType());
         this.partnerDao.PartnerVipPromotion(partner);
-        System.out.println("status actual del partner: "+ partner.isType());
+        return "status actual del partner: "+ partner.isType();
     }
 
     @Override
-    public void invoiceHistory() throws Exception {
+    public List<InvoiceDetailDto> invoiceHistory() throws Exception {
         List<InvoiceDetailDto> listInvoicesDetailDto = this.invoideDetailDao.listClubInvoices();
-        for(InvoiceDetailDto invoiceDetailDto : listInvoicesDetailDto){
-            System.out.println("######################");
-            System.out.println("ENCABEZADO DE LA FACTURA"
-                + "\nID: " + invoiceDetailDto.getInvoiceId().getId()
-                + "\nDOCUMENTO: " + invoiceDetailDto.getInvoiceId().getPersonId().getDocument()
-                + "\nSOCIO: " + invoiceDetailDto.getInvoiceId().getPartnerId().getUserId().getUserName()
-                + "\nFEHCA: " + invoiceDetailDto.getInvoiceId().getCreationDate()
-                + "\nVALOR TOTAL: " + invoiceDetailDto.getInvoiceId().getAmount()
-                + "\nESTADO: " + invoiceDetailDto.getInvoiceId().isStatus()
-                + "\nDETALLES DE LA FACTURA"
-                + "\nID: " + invoiceDetailDto.getId()
-                + "\nENCABEZADO ID: " + invoiceDetailDto.getInvoiceId().getId()
-                + "\nNUMERO DEL ITEM: " + invoiceDetailDto.getItem()
-                + "\nDESCRIPCION: " + invoiceDetailDto.getDescription()
-                + "\nVALOR DEL ITEM: " + invoiceDetailDto.getAmount());
-        }
+        return listInvoicesDetailDto;
         
     }
 
     @Override
-    public void invoiceHistoryPartner(long document) throws Exception {
+    public List<InvoiceDetailDto> invoiceHistoryPartner(long document) throws Exception {
         PersonDto personDto = new PersonDto();
         personDto.setDocument(document);
         if(this.personDao.existsByDocument(personDto) == false) {
@@ -229,30 +202,19 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
             throw new Exception("Esta persona no es un socio");
         }
         List<InvoiceDetailDto> listInvoicesDetailDto = this.invoideDetailDao.listClubInvoices();
+        List<InvoiceDetailDto> listInvoicesDetialPartner = new ArrayList<>();
         for(InvoiceDetailDto invoiceDetailDto : listInvoicesDetailDto){
             if(invoiceDetailDto.getInvoiceId().getPersonId().getDocument() == document){
-                System.out.println("######################");
-                System.out.println("ENCABEZADO DE LA FACTURA"
-                    + "\nID: " + invoiceDetailDto.getInvoiceId().getId()
-                    + "\nDOCUMENTO: " + invoiceDetailDto.getInvoiceId().getPersonId().getDocument()
-                    + "\nSOCIO: " + invoiceDetailDto.getInvoiceId().getPartnerId().getUserId().getUserName()
-                    + "\nFEHCA: " + invoiceDetailDto.getInvoiceId().getCreationDate()
-                    + "\nVALOR TOTAL: " + invoiceDetailDto.getInvoiceId().getAmount()
-                    + "\nESTADO: " + invoiceDetailDto.getInvoiceId().isStatus()
-                    + "\nDETALLES DE LA FACTURA"
-                    + "\nID: " + invoiceDetailDto.getId()
-                    + "\nENCABEZADO ID: " + invoiceDetailDto.getInvoiceId().getId()
-                    + "\nNUMERO DEL ITEM: " + invoiceDetailDto.getItem()
-                    + "\nDESCRIPCION: " + invoiceDetailDto.getDescription()
-                    + "\nVALOR DEL ITEM: " + invoiceDetailDto.getAmount());
+                listInvoicesDetialPartner.add(invoiceDetailDto);
             }    
         }
+        return listInvoicesDetialPartner;
             
     }
 
     @Override
-    public void invoiceHistoryGuest(long document) throws Exception {
-      PersonDto personDto = new PersonDto();
+    public List<InvoiceDetailDto> invoiceHistoryGuest(long document) throws Exception {
+        PersonDto personDto = new PersonDto();
         personDto.setDocument(document);
         if(this.personDao.existsByDocument(personDto) == false) {
             throw new Exception("no existe una persona con ese documento");
@@ -264,24 +226,13 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
             throw new Exception("Esta persona no es un invitado");
         }
         List<InvoiceDetailDto> listInvoicesDetailDto = this.invoideDetailDao.listClubInvoices();
+        List<InvoiceDetailDto> listInvoicesDetialGuest = new ArrayList<>();
         for(InvoiceDetailDto invoiceDetailDto : listInvoicesDetailDto){
             if(invoiceDetailDto.getInvoiceId().getPersonId().getDocument() == document){
-                System.out.println("######################");
-                System.out.println("ENCABEZADO DE LA FACTURA"
-                    + "\nID: " + invoiceDetailDto.getInvoiceId().getId()
-                    + "\nDOCUMENTO: " + invoiceDetailDto.getInvoiceId().getPersonId().getDocument()
-                    + "\nSOCIO: " + invoiceDetailDto.getInvoiceId().getPartnerId().getUserId().getUserName()
-                    + "\nFEHCA: " + invoiceDetailDto.getInvoiceId().getCreationDate()
-                    + "\nVALOR TOTAL: " + invoiceDetailDto.getInvoiceId().getAmount()
-                    + "\nESTADO: " + invoiceDetailDto.getInvoiceId().isStatus()
-                    + "\nDETALLES DE LA FACTURA"
-                    + "\nID: " + invoiceDetailDto.getId()
-                    + "\nENCABEZADO ID: " + invoiceDetailDto.getInvoiceId().getId()
-                    + "\nNUMERO DEL ITEM: " + invoiceDetailDto.getItem()
-                    + "\nDESCRIPCION: " + invoiceDetailDto.getDescription()
-                    + "\nVALOR DEL ITEM: " + invoiceDetailDto.getAmount());
+                listInvoicesDetialGuest.add(invoiceDetailDto);
             }    
-        }  
+        }
+        return listInvoicesDetialGuest;
     }
 
 }

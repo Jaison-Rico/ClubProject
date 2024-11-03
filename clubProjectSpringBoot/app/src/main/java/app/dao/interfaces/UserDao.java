@@ -12,4 +12,5 @@ public interface UserDao {
     public void deleteUser(UserDto userDto) throws Exception;
     public UserDto findByPersonId (PersonDto personDto) throws Exception;
     public void convertPartner(UserDto userDto) throws Exception;
+    public UserDto findByid(long id) throws Exception;
 }
