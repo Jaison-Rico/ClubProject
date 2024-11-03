@@ -4,16 +4,19 @@ import app.controller.request.CreationUserRequest;
 import app.controller.validator.PartnerValidator;
 import app.controller.validator.PersonValidator;
 import app.controller.validator.UserValidator;
+import app.dto.InvoiceDetailDto;
 import app.dto.PartnerDto;
 import app.dto.PersonDto;
 import app.dto.UserDto;
 import app.service.interfaces.AdminService;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -79,9 +82,11 @@ public  class AdminController implements ControllerInterface{
         }
         
     }
-    private void invoiceHistory() throws Exception{
-        System.out.println("Historial de facturas");
-        this.service.invoiceHistory();
+    @GetMapping("/invoices")
+    private ResponseEntity invoiceHistory() throws Exception{
+       List<InvoiceDetailDto> listInvoicesDetailDto = this.service.invoiceHistory();
+       return ResponseEntity.ok(listInvoicesDetailDto);
+        
     }
     private void invoiceHistoryPartner() throws Exception{
         System.out.println("historial de facturas del socio: ");

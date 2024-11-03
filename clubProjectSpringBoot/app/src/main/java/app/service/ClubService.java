@@ -194,10 +194,9 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
     }
 
     @Override
-    public void invoiceHistory() throws Exception {
+    public List<InvoiceDetailDto> invoiceHistory() throws Exception {
         List<InvoiceDetailDto> listInvoicesDetailDto = this.invoideDetailDao.listClubInvoices();
         for(InvoiceDetailDto invoiceDetailDto : listInvoicesDetailDto){
-            System.out.println("######################");
             System.out.println("ENCABEZADO DE LA FACTURA"
                 + "\nID: " + invoiceDetailDto.getInvoiceId().getId()
                 + "\nDOCUMENTO: " + invoiceDetailDto.getInvoiceId().getPersonId().getDocument()
@@ -212,6 +211,7 @@ public class ClubService implements LoginService, AdminService, PartnerService, 
                 + "\nDESCRIPCION: " + invoiceDetailDto.getDescription()
                 + "\nVALOR DEL ITEM: " + invoiceDetailDto.getAmount());
         }
+        return listInvoicesDetailDto;
         
     }
 
