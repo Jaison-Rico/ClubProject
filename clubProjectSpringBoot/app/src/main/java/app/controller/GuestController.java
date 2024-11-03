@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.controller.request.CreationInvoiceRequest;
+import app.controller.request.PostIncrementAmount;
 import app.controller.validator.InvoiceValidator;
 
 import app.dto.InvoiceDetailDto;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @NoArgsConstructor
@@ -29,6 +31,8 @@ public class GuestController{
     private InvoiceValidator invoiceValidator;
     @Autowired
     private GuestService service;
+
+    
     
     @PostMapping("/create-invoice")
     private ResponseEntity createInvoice(@RequestBody CreationInvoiceRequest request) throws Exception {  
@@ -60,20 +64,22 @@ public class GuestController{
         }
         
     }
-    
-    
-    
-    private void convertPartner() throws Exception {
-        PartnerDto parnetDto = new PartnerDto();
-        UserDto userDto = new UserDto();
-        System.out.println("ingrese el fondo inial");
-        double amount = invoiceValidator.validAmount(Utils.getReader().nextLine());
-        parnetDto.setUserId(userDto);
-        parnetDto.setAmount(amount);
-        parnetDto.setType("regular");
-        parnetDto.setCreationDate(Utils.getDate());
-        System.out.println("acabas de convertirse en socio");
-        this.service.convertPartner(parnetDto);
+    @PutMapping("/convert-partner")
+    private ResponseEntity convertPartner(@RequestBody PostIncrementAmount request) throws Exception {
+        try {
+            PartnerDto parnetDto = new PartnerDto();
+            UserDto userDto = new UserDto();
+            double amount = invoiceValidator.validAmount(request.getAmount());
+            parnetDto.setId(request.getUserSesion());
+            parnetDto.setUserId(userDto);
+            parnetDto.setAmount(amount);
+            parnetDto.setType("regular");
+            parnetDto.setCreationDate(Utils.getDate());
+            this.service.convertPartner(parnetDto);
+            return ResponseEntity.ok("acabas de convertirse en socio");
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         
         
     }

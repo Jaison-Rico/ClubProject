@@ -146,10 +146,11 @@ public class ClubService implements  AdminService, PartnerService, GuestService 
 
     @Override
     public void convertPartner(PartnerDto partnerDto) throws Exception {
-        this.userDao.convertPartner(user);
+        UserDto userDto = this.userDao.findByid(partnerDto.getId());
+        this.userDao.convertPartner(userDto);
         GuestDto guestDto = new GuestDto();
-        guestDto = this.guestDao.findByUserId(user);
-        partnerDto.setUserId(user);
+        guestDto = this.guestDao.findByUserId(userDto);
+        partnerDto.setUserId(userDto);
         this.partnerDao.createPartner(partnerDto);
         this.guestDao.deleteGuest(guestDto);
         
